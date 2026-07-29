@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect } from 'react'
 import SEO from '../components/SEO'
-import HeroFallback from '../components/HeroFallback'
+import Hero from '../sections/Hero'
 import Skills from '../sections/Skills'
 import Experience from '../sections/Experience'
 const Contact = lazy(() => import('../sections/Contact'))
@@ -10,7 +10,6 @@ const Certifications = lazy(() => import('../sections/Certifications'))
 const Blog = lazy(() => import('../sections/Blog'))
 const FAQ = lazy(() => import('../components/FAQ'))
 
-const Hero = lazy(() => import('../sections/Hero'))
 const About = lazy(() => import('../sections/About'))
 
 function LazySection({ children }: { children: React.ReactNode }) {
@@ -40,9 +39,7 @@ export default function Home() {
         path="/"
       />
       <main className="grid-bg">
-        <Suspense fallback={<HeroFallback />}>
-          <Hero />
-        </Suspense>
+        <Hero />
         <Suspense fallback={<div className="h-64" />}>
           <About />
         </Suspense>
