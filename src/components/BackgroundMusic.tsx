@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useCallback } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Volume2, VolumeX } from 'lucide-react'
 
@@ -6,49 +6,30 @@ const STORAGE_KEY = 'portfolio-music-enabled'
 
 export default function BackgroundMusic() {
   const audioRef = useRef<HTMLAudioElement>(null)
-  const [isActuallyPlaying, setIsActuallyPlaying] = useState(false)
-  const [persistedEnabled, setPersistedEnabled] = useState(() => {
-    try {
-      return localStorage.getItem(STORAGE_KEY) === 'true'
-    } catch {
-      return false
-    }
+  const [playing, setPlaying] = useState(false)
+  const [userEnabled, setUserEnabled] = useState(() => {
+    try { return localStorage.getItem(STORAGE_KEY) === 'true' } catch { return false }
   })
-  const [started, setStarted] = useState(false)
 
-  // wire up native play/pause events so the icon always reflects real audio state
+  // set up audio and native event listeners once
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
-
     audio.volume = 0.15
     audio.loop = true
 
-    const onPlay = () => {
-      console.log('[BackgroundMusic] native play event fired')
-      setIsActuallyPlaying(true)
-    }
-    const onPause = () => {
-      console.log('[BackgroundMusic] native pause event fired')
-      setIsActuallyPlaying(false)
-    }
-
+    const onPlay = () => { console.log('[BG] play event'); setPlaying(true) }
+    const onPause = () => { console.log('[BG] pause event'); setPlaying(false) }
     audio.addEventListener('play', onPlay)
     audio.addEventListener('pause', onPause)
 
-    // on mount, if the user previously opted in, try to resume playback
-    // do NOT set started=true until play actually resolves — otherwise the
-    // first-interaction handler will be blocked and music will never start
-    if (persistedEnabled && !started) {
+    // attempt autoplay on mount if previously enabled — no state is optimistically flipped
+    if (userEnabled) {
       audio.play()
-        .then(() => {
-          console.log('[BackgroundMusic] autoplay attempt resolved — playing')
-          setStarted(true)
-        })
-        .catch((err) => {
-          console.log('[BackgroundMusic] autoplay blocked:', err.name, err.message)
-          // started stays false so the first-interaction handler can try later
-          setIsActuallyPlaying(false)
+        .then(() => console.log('[BG] mount autoplay ok'))
+        .catch((e) => {
+          console.log('[BG] mount autoplay blocked:', e.name)
+          setPlaying(false)
         })
     }
 
@@ -56,29 +37,22 @@ export default function BackgroundMusic() {
       audio.removeEventListener('play', onPlay)
       audio.removeEventListener('pause', onPause)
     }
-    // run exactly once on mount; started/persistedEnabled are captured at mount
+    // run once
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // first-interaction handler — uses multiple events to maximise browser compatibility.
-  // Do NOT use passive:true on wheel — some Chromium-based browsers (Edge, Brave)
-  // may not treat passive wheel events as valid user gestures for audio.play().
+  // first user interaction — triggers play ONCE
   useEffect(() => {
     const handler = () => {
-      if (started) return
       const audio = audioRef.current
-      if (!audio) return
-      setStarted(true)
-      setPersistedEnabled(true)
+      if (!audio || audio.paused === false) return
+      setUserEnabled(true)
       try { localStorage.setItem(STORAGE_KEY, 'true') } catch {}
       audio.play()
-        .then(() => {
-          console.log('[BackgroundMusic] first-interaction play succeeded')
-          // native play event will fire and setIsActuallyPlaying(true)
-        })
-        .catch((err) => {
-          console.log('[BackgroundMusic] first-interaction play failed:', err.name, err.message)
-          setIsActuallyPlaying(false)
+        .then(() => console.log('[BG] first-interaction ok'))
+        .catch((e) => {
+          console.log('[BG] first-interaction failed:', e.name)
+          setPlaying(false)
         })
     }
     document.addEventListener('click', handler, { once: true })
@@ -93,29 +67,26 @@ export default function BackgroundMusic() {
       document.removeEventListener('pointerdown', handler)
       document.removeEventListener('wheel', handler)
     }
-  }, [started])
+  }, [])
 
-  const toggle = useCallback(() => {
+  const toggle = () => {
     const audio = audioRef.current
     if (!audio) return
-    if (isActuallyPlaying) {
-      audio.pause()
-      setPersistedEnabled(false)
-      try { localStorage.setItem(STORAGE_KEY, 'false') } catch {}
-      // native pause event will fire and setIsActuallyPlaying(false)
-    } else {
-      setPersistedEnabled(true)
+    if (audio.paused) {
+      setUserEnabled(true)
       try { localStorage.setItem(STORAGE_KEY, 'true') } catch {}
       audio.play()
-        .then(() => {
-          console.log('[BackgroundMusic] toggle play succeeded')
+        .then(() => console.log('[BG] toggle play ok'))
+        .catch((e) => {
+          console.log('[BG] toggle play failed:', e.name)
+          setPlaying(false)
         })
-        .catch((err) => {
-          console.log('[BackgroundMusic] toggle play failed:', err.name, err.message)
-          setIsActuallyPlaying(false)
-        })
+    } else {
+      setUserEnabled(false)
+      try { localStorage.setItem(STORAGE_KEY, 'false') } catch {}
+      audio.pause()
     }
-  }, [isActuallyPlaying])
+  }
 
   return (
     <>
@@ -127,19 +98,19 @@ export default function BackgroundMusic() {
         onClick={toggle}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.95 }}
-        aria-label={isActuallyPlaying ? 'Pause background music' : 'Play background music'}
+        aria-label={playing ? 'Pause background music' : 'Play background music'}
         className="relative w-11 h-11 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)] flex items-center justify-center"
       >
         <motion.div
           className="absolute inset-0 rounded-full"
           style={{
-            background: 'var(--glass-bg)',
+            background: 'color-mix(in srgb, var(--bg) 65%, transparent)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
             border: '1px solid var(--border)',
           }}
           animate={
-            isActuallyPlaying
+            playing
               ? {
                   boxShadow: [
                     '0 0 8px rgba(96,165,250,0.15)',
@@ -159,13 +130,13 @@ export default function BackgroundMusic() {
           }
           transition={{
             duration: 2,
-            repeat: isActuallyPlaying ? Infinity : 0,
+            repeat: playing ? Infinity : 0,
             ease: 'easeInOut',
           }}
         />
 
         <span className="relative z-10 flex items-center justify-center">
-          {isActuallyPlaying ? <Volume2 size={14} className="text-accent" /> : <VolumeX size={14} className="text-secondary" />}
+          {playing ? <Volume2 size={14} className="text-accent" /> : <VolumeX size={14} className="text-secondary" />}
         </span>
       </motion.button>
     </>
