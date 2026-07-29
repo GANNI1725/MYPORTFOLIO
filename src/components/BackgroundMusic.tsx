@@ -40,11 +40,13 @@ export default function BackgroundMusic() {
 
   useEffect(() => {
     const handler = () => {
-      if (!enabled || started) return
+      if (started) return
       const audio = audioRef.current
       if (!audio) return
       audio.play().catch(() => {})
       setStarted(true)
+      setEnabled(true)
+      try { localStorage.setItem(STORAGE_KEY, 'true') } catch {}
     }
     document.addEventListener('click', handler, { once: true })
     document.addEventListener('keydown', handler, { once: true })
@@ -56,7 +58,7 @@ export default function BackgroundMusic() {
       document.removeEventListener('touchstart', handler)
       document.removeEventListener('wheel', handler)
     }
-  }, [enabled, started])
+  }, [started])
 
   return (
     <>
