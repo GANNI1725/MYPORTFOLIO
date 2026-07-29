@@ -3,8 +3,7 @@ import { Volume2, VolumeX } from 'lucide-react'
 
 export default function BackgroundMusic() {
   const audioRef = useRef<HTMLAudioElement>(null)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [interacted, setInteracted] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(true)
 
   const toggle = useCallback(() => {
     if (!audioRef.current) return
@@ -18,27 +17,12 @@ export default function BackgroundMusic() {
   }, [isPlaying])
 
   useEffect(() => {
-    const handleInteraction = () => {
-      if (interacted) return
-      setInteracted(true)
-      if (audioRef.current) {
-        audioRef.current.volume = 0.15
-        audioRef.current.loop = true
-        audioRef.current.play().catch(() => {})
-        setIsPlaying(true)
-      }
-    }
-
-    document.addEventListener('click', handleInteraction, { once: true })
-    document.addEventListener('touchstart', handleInteraction, { once: true })
-    document.addEventListener('keydown', handleInteraction, { once: true })
-
-    return () => {
-      document.removeEventListener('click', handleInteraction)
-      document.removeEventListener('touchstart', handleInteraction)
-      document.removeEventListener('keydown', handleInteraction)
-    }
-  }, [interacted])
+    const audio = audioRef.current
+    if (!audio) return
+    audio.volume = 0.15
+    audio.loop = true
+    audio.play().catch(() => setIsPlaying(false))
+  }, [])
 
   return (
     <>
