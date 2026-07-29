@@ -11,6 +11,15 @@ import ContactUs from './pages/ContactUs'
 import NotFound from './pages/NotFound'
 import ServerError from './pages/ServerError'
 
+function ScrollToTop() {
+  const { pathname, hash } = useLocation()
+  useEffect(() => {
+    if (pathname === '/' && hash) return // Home handles its own scroll
+    window.scrollTo(0, 0)
+  }, [pathname, hash])
+  return null
+}
+
 function ScrollProgress() {
   const [progress, setProgress] = useState(0)
   const location = useLocation()
@@ -43,6 +52,7 @@ function ScrollProgress() {
 export default function App() {
   return (
     <ErrorBoundary fallback={<ServerError />}>
+      <ScrollToTop />
       <ScrollProgress />
       <Navbar />
       <Routes>
