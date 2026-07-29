@@ -113,7 +113,11 @@ function PortraitSection() {
   }, [mouseX, mouseY])
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
+    <motion.div
+      initial={false}
+      animate={{ opacity: 1, scale: 1 }}
+      className="relative w-full h-full flex items-center justify-center"
+    >
       <div className="absolute w-[627px] h-[627px] md:w-[765px] md:h-[765px] rounded-full bg-gradient-to-br from-accent/8 via-accent/3 to-transparent blur-2xl" />
       <div className="absolute w-[836px] h-[836px] md:w-[1043px] md:h-[1043px] rounded-full bg-accent/3 blur-[80px]" />
 
@@ -122,8 +126,10 @@ function PortraitSection() {
       </div>
 
       <div className="relative w-[446px] md:w-[584px]">
-        <div
-          className="w-full [animation:hero-float_4s_ease-in-out_infinite]"
+        <motion.div
+          animate={reduced ? undefined : { y: [0, -5, 0] }}
+          transition={{ duration: 4, ease: 'easeInOut', repeat: Infinity }}
+          className="w-full"
         >
           <div
             ref={containerRef}
@@ -162,13 +168,17 @@ function PortraitSection() {
               )}
             </motion.div>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 opacity-20 [animation:hero-glow_3s_ease-in-out_infinite]">
+        <motion.div
+          animate={{ opacity: [0.2, 0.4, 0.2] }}
+          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute -bottom-4 left-1/2 -translate-x-1/2"
+        >
           <div className="w-[312px] h-14 bg-accent/10 blur-2xl rounded-full" />
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
@@ -208,13 +218,21 @@ export default function Hero() {
                 char === "\n" ? (
                   <br key={i} />
                 ) : (
-                  <span
+                  <motion.span
                     key={i}
-                    className="inline-block char-reveal"
-                    style={{ animationDelay: `${0.05 + (i * 0.03)}s` }}
+                    className="inline-block"
+                    initial={reduced ? undefined : { opacity: 0, y: 80, scale: 0.2, rotate: -20, color: '#60A5FA', filter: 'blur(8px)' }}
+                    animate={reduced ? undefined : { opacity: 1, y: 0, scale: 1, rotate: 0, color: 'var(--primary)', filter: 'blur(0px)' }}
+                    transition={{
+                      type: 'spring',
+                      stiffness: 220,
+                      damping: 11,
+                      mass: 0.4,
+                      delay: i * 0.03,
+                    }}
                   >
                     {char === " " ? "\u00A0" : char}
-                  </span>
+                  </motion.span>
                 )
               )}
             </motion.h1>
@@ -232,7 +250,22 @@ export default function Hero() {
               animate={{ opacity: 1 }}
               className="text-base md:text-lg text-secondary max-w-lg leading-relaxed"
             >
-              {personalInfo.tagline}
+              {reduced
+                ? personalInfo.tagline
+                : personalInfo.tagline.split("").map((char, i) => (
+                    <motion.span
+                      key={i}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{
+                        duration: 0.4,
+                        delay: 0.5 + i * 0.015,
+                        ease: [0.16, 1, 0.3, 1],
+                      }}
+                    >
+                      {char === " " ? "\u00A0" : char}
+                    </motion.span>
+                  ))}
             </motion.p>
 
             <SocialLinks links={socialLinks} delay={1.8} />
@@ -290,11 +323,16 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-0 [animation:fadeInUp_0.6s_ease-out_0.6s_forwards]">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, y: [0, 8, 0] }}
+        transition={{ opacity: { duration: 0.4 }, y: { duration: 2, repeat: Infinity, ease: 'easeInOut' } }}
+        className="absolute bottom-6 left-1/2 -translate-x-1/2"
+      >
         <div className="w-6 h-10 rounded-full border border-white/10 flex items-start justify-center p-1.5">
           <div className="w-1 h-2 rounded-full bg-accent/60" />
         </div>
-      </div>
+      </motion.div>
     </section>
   )
 }
