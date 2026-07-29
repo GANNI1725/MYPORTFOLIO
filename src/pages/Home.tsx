@@ -4,7 +4,7 @@ import Hero from '../sections/Hero'
 import About from '../sections/About'
 import Skills from '../sections/Skills'
 import Experience from '../sections/Experience'
-import Contact from '../sections/Contact'
+const Contact = lazy(() => import('../sections/Contact'))
 
 const Projects = lazy(() => import('../sections/Projects'))
 const Certifications = lazy(() => import('../sections/Certifications'))
