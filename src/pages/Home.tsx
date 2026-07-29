@@ -12,9 +12,22 @@ import Contact from '../sections/Contact'
 
 export default function Home() {
   useEffect(() => {
-    window.scrollTo(0, 0)
-    if (window.location.hash) {
-      history.replaceState(null, '', window.location.pathname)
+    const navEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined
+    const isReload = navEntry?.type === 'reload'
+
+    if (isReload) {
+      window.scrollTo(0, 0)
+      if (window.location.hash) {
+        history.replaceState(null, '', window.location.pathname)
+      }
+    } else {
+      const hash = window.location.hash
+      if (hash) {
+        const el = document.getElementById(hash.slice(1))
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' })
+        }
+      }
     }
   }, [])
 

@@ -5,6 +5,9 @@ import { HelmetProvider } from 'react-helmet-async'
 import './index.css'
 import App from './App'
 
+// prevent browser from restoring scroll position on refresh
+history.scrollRestoration = 'manual'
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <HelmetProvider>
