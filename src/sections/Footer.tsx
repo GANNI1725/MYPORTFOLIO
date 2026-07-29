@@ -88,7 +88,7 @@ export default function Footer() {
             {/* Column 1 — Logo + Tagline + Social */}
             <motion.div variants={fadeUp} className="md:col-span-5 flex flex-col items-center md:items-start gap-5">
               <div className="flex items-center gap-3">
-                <img src="/logo-96.webp" alt="GPB" className="h-7 w-auto opacity-80" />
+                <img src="/logo.png" alt="GPB" className="h-7 w-auto opacity-80" />
                 <span className="text-sm font-semibold text-primary">Ganesh Prasad Bhandari</span>
               </div>
               <p className="text-xs text-secondary/60 leading-relaxed max-w-xs text-center md:text-left">

@@ -1,9 +1,9 @@
-import { useState, useEffect, lazy, Suspense } from 'react'
+import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 import Logo from './Logo'
-
-const ThemeToggle = lazy(() => import('./ThemeToggle'))
+import ThemeToggle from './ThemeToggle'
 
 const navItems = [
   { name: 'Home', href: '/#home' },
@@ -72,11 +72,18 @@ export default function Navbar() {
                 href={item.href}
                 className={`relative px-3 py-1.5 text-sm font-medium transition-all duration-200 rounded-full whitespace-nowrap ${
                   isActive
-                    ? 'text-accent bg-accent/10 border border-accent/20'
+                    ? 'text-accent'
                     : 'text-secondary/70 hover:text-primary hover:bg-accent/5'
                 }`}
               >
-                {item.name}
+                {isActive && (
+                  <motion.span
+                    layoutId="nav-pill"
+                    className="absolute inset-0 bg-accent/10 rounded-full border border-accent/20"
+                    transition={{ type: 'spring', stiffness: 350, damping: 35 }}
+                  />
+                )}
+                <span className="relative z-10">{item.name}</span>
               </a>
             )
           })}
@@ -88,9 +95,7 @@ export default function Navbar() {
         style={{ top: pillTop, right: '1rem', transition: 'top 0.35s cubic-bezier(0.16,1,0.3,1)' }}
       >
         <div className={`glass-pill flex items-center ${pillGap} ${pillPad} ${pillShine}`}>
-          <Suspense fallback={<div className="w-11 h-11" />}>
-            <ThemeToggle />
-          </Suspense>
+          <ThemeToggle />
           <div className="w-px h-5 bg-[var(--border)]" />
           <a
             href="/#contact"
@@ -108,39 +113,41 @@ export default function Navbar() {
         </div>
       </div>
 
-      <div
-        className={`fixed inset-0 z-40 bg-[var(--bg)]/80 backdrop-blur-xl flex flex-col items-center justify-center gap-6 transition-all duration-300 ${
-          isMobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
-      >
-        {navItems.map((item, i) => (
-          <a
-            key={item.name}
-            href={item.href}
-            onClick={() => setIsMobileOpen(false)}
-            className="text-2xl font-bold text-primary hover:text-accent transition-colors"
-            style={{
-              opacity: isMobileOpen ? 1 : 0,
-              transform: isMobileOpen ? 'translateY(0)' : 'translateY(20px)',
-              transition: `opacity 0.4s ease-out ${i * 0.05}s, transform 0.4s ease-out ${i * 0.05}s`,
-            }}
+      <AnimatePresence>
+        {isMobileOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-40 bg-[var(--bg)]/80 backdrop-blur-xl flex flex-col items-center justify-center gap-6"
           >
-            {item.name}
-          </a>
-        ))}
-        <a
-          href="/#contact"
-          onClick={() => setIsMobileOpen(false)}
-          className="mt-4 h-11 px-8 flex items-center justify-center rounded-full bg-accent text-white font-semibold text-sm shadow-lg shadow-accent/25 transition-all"
-          style={{
-            opacity: isMobileOpen ? 1 : 0,
-            transform: isMobileOpen ? 'translateY(0)' : 'translateY(20px)',
-            transition: `opacity 0.4s ease-out ${navItems.length * 0.05 + 0.1}s, transform 0.4s ease-out ${navItems.length * 0.05 + 0.1}s`,
-          }}
-        >
-          Hire Me
-        </a>
-      </div>
+            {navItems.map((item, i) => (
+              <motion.a
+                key={item.name}
+                href={item.href}
+                onClick={() => setIsMobileOpen(false)}
+                initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ delay: i * 0.06, type: 'spring', stiffness: 200, damping: 20 }}
+                className="text-2xl font-bold text-primary hover:text-accent transition-colors"
+              >
+                {item.name}
+              </motion.a>
+            ))}
+            <motion.a
+              href="/#contact"
+              onClick={() => setIsMobileOpen(false)}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: navItems.length * 0.06 + 0.1 }}
+              className="mt-4 h-11 px-8 flex items-center justify-center rounded-full bg-accent text-white font-semibold text-sm shadow-lg shadow-accent/25 transition-all"
+            >
+              Hire Me
+            </motion.a>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   )
 }
