@@ -49,10 +49,12 @@ export default function BackgroundMusic() {
     document.addEventListener('click', handler, { once: true })
     document.addEventListener('keydown', handler, { once: true })
     document.addEventListener('touchstart', handler, { once: true })
+    document.addEventListener('wheel', handler, { passive: true, once: true })
     return () => {
       document.removeEventListener('click', handler)
       document.removeEventListener('keydown', handler)
       document.removeEventListener('touchstart', handler)
+      document.removeEventListener('wheel', handler)
     }
   }, [enabled, started])
 
