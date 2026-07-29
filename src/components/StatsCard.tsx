@@ -31,8 +31,8 @@ function AnimatedNumber({ value, delay }: { value: string; delay: number }) {
 export default function StatsCard({ stats, delay = 0.8 }: StatsCardProps) {
   return (
     <div
-      className="glass rounded-2xl p-5 flex [animation:heroFadeUp_0.5s_ease-out_forwards]"
-      style={{ animationDelay: `${delay}s` }}
+      className="glass rounded-2xl p-5 flex"
+      style={{ animation: `heroFadeUp 0.5s ease-out ${delay}s forwards` }}
     >
       {stats.map((stat, i) => (
         <div
