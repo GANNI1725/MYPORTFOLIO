@@ -251,6 +251,12 @@ export default function Hero() {
                   )}
             </motion.h1>
 
+            <div className="flex lg:hidden items-center justify-center my-6">
+              <div className="w-[280px] sm:w-[320px]">
+                <PortraitSection />
+              </div>
+            </div>
+
             <motion.h2
               initial={{ opacity: 0, y: 20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -319,12 +325,6 @@ export default function Hero() {
             <div className="w-full max-w-[696px]">
               <PortraitSection />
             </div>
-          </div>
-        </div>
-
-        <div className="flex lg:hidden items-center justify-center mt-10">
-          <div className="w-[389px]">
-            <PortraitSection />
           </div>
         </div>
       </div>
