@@ -61,7 +61,7 @@ export default function BackgroundMusic() {
   return (
     <>
       <audio ref={audioRef} preload="metadata">
-        <source src="/audio/background.mpeg" type="audio/mpeg" />
+        <source src="/audio/background.mp3" type="audio/mpeg" />
       </audio>
 
       <motion.button
