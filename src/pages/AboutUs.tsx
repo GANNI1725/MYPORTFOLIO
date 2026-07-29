@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import SEO from '../components/SEO'
 import { personalInfo } from '../data'
 import SocialLinks from '../components/SocialLinks'
+import { useReducedMotion } from '../hooks/useReducedMotion'
 
 const socialLinks = [
   {
@@ -30,6 +31,7 @@ const socialLinks = [
 ]
 
 export default function AboutUs() {
+  const reduced = useReducedMotion()
   return (
     <>
       <SEO
@@ -40,9 +42,9 @@ export default function AboutUs() {
       <div className="min-h-screen pt-28 pb-20 px-6 md:px-10">
         <div className="max-w-4xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={reduced ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="mb-12"
           >
             <p className="text-xs font-semibold tracking-[0.2em] uppercase text-accent mb-3">About</p>
@@ -53,9 +55,9 @@ export default function AboutUs() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
+              initial={reduced ? false : { opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             >
               <h2 className="text-lg font-bold text-primary mb-3">Who I Am</h2>
               <p className="text-sm text-secondary leading-relaxed mb-4">
@@ -70,9 +72,9 @@ export default function AboutUs() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
+              initial={reduced ? false : { opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             >
               <h2 className="text-lg font-bold text-primary mb-3">My Approach</h2>
               <p className="text-sm text-secondary leading-relaxed mb-4">
@@ -88,9 +90,9 @@ export default function AboutUs() {
           </div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={reduced ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="glass rounded-2xl p-8 text-center space-y-4"
           >
             <h2 className="text-lg font-bold text-primary">Let's Connect</h2>

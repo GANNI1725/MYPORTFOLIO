@@ -1,59 +1,54 @@
 import { useRef, useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { Volume2, VolumeX } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Music } from 'lucide-react'
 
 const STORAGE_KEY = 'portfolio-music-enabled'
+type Preference = 'on' | 'off' | null
 
 export default function BackgroundMusic() {
   const audioRef = useRef<HTMLAudioElement>(null)
   const [playing, setPlaying] = useState(false)
-  const [userEnabled, setUserEnabled] = useState(() => {
-    try { return localStorage.getItem(STORAGE_KEY) === 'true' } catch { return false }
+  const [preference, setPreference] = useState<Preference>(() => {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY)
+      if (stored === 'true') return 'on'
+      if (stored === 'false') return 'off'
+    } catch {}
+    return null
   })
 
-  // set up audio and native event listeners once
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
     audio.volume = 0.15
     audio.loop = true
 
-    const onPlay = () => { console.log('[BG] play event'); setPlaying(true) }
-    const onPause = () => { console.log('[BG] pause event'); setPlaying(false) }
+    const onPlay = () => setPlaying(true)
+    const onPause = () => setPlaying(false)
     audio.addEventListener('play', onPlay)
     audio.addEventListener('pause', onPause)
 
-    // attempt autoplay on mount if previously enabled — no state is optimistically flipped
-    if (userEnabled) {
+    if (preference === 'on') {
       audio.play()
-        .then(() => console.log('[BG] mount autoplay ok'))
-        .catch((e) => {
-          console.log('[BG] mount autoplay blocked:', e.name)
-          setPlaying(false)
-        })
+        .catch(() => setPlaying(false))
     }
 
     return () => {
       audio.removeEventListener('play', onPlay)
       audio.removeEventListener('pause', onPause)
     }
-    // run once
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // first user interaction — triggers play ONCE
   useEffect(() => {
+    if (preference !== null) return
     const handler = () => {
       const audio = audioRef.current
       if (!audio || audio.paused === false) return
-      setUserEnabled(true)
+      setPreference('on')
       try { localStorage.setItem(STORAGE_KEY, 'true') } catch {}
       audio.play()
-        .then(() => console.log('[BG] first-interaction ok'))
-        .catch((e) => {
-          console.log('[BG] first-interaction failed:', e.name)
-          setPlaying(false)
-        })
+        .catch(() => setPlaying(false))
     }
     document.addEventListener('click', handler, { once: true })
     document.addEventListener('keydown', handler, { once: true })
@@ -67,22 +62,18 @@ export default function BackgroundMusic() {
       document.removeEventListener('pointerdown', handler)
       document.removeEventListener('wheel', handler)
     }
-  }, [])
+  }, [preference])
 
   const toggle = () => {
     const audio = audioRef.current
     if (!audio) return
     if (audio.paused) {
-      setUserEnabled(true)
+      setPreference('on')
       try { localStorage.setItem(STORAGE_KEY, 'true') } catch {}
       audio.play()
-        .then(() => console.log('[BG] toggle play ok'))
-        .catch((e) => {
-          console.log('[BG] toggle play failed:', e.name)
-          setPlaying(false)
-        })
+        .catch(() => setPlaying(false))
     } else {
-      setUserEnabled(false)
+      setPreference('off')
       try { localStorage.setItem(STORAGE_KEY, 'false') } catch {}
       audio.pause()
     }
@@ -131,12 +122,32 @@ export default function BackgroundMusic() {
           transition={{
             duration: 2,
             repeat: playing ? Infinity : 0,
-            ease: 'easeInOut',
+            ease: [0.4, 0, 0.2, 1],
           }}
         />
 
         <span className="relative z-10 flex items-center justify-center">
-          {playing ? <Volume2 size={14} className="text-accent" /> : <VolumeX size={14} className="text-secondary" />}
+          <motion.span
+            className="relative flex items-center justify-center"
+            animate={playing ? { rotate: 360 } : { rotate: 0 }}
+            transition={playing ? { duration: 2, repeat: Infinity, ease: 'linear' } : { duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <Music size={14} className={playing ? 'text-accent' : 'text-secondary'} />
+            <AnimatePresence>
+              {!playing && (
+                <motion.span
+                  className="absolute inset-0 flex items-center justify-center pointer-events-none"
+                  initial={{ opacity: 0, scaleX: 0 }}
+                  animate={{ opacity: 1, scaleX: 1 }}
+                  exit={{ opacity: 0, scaleX: 0 }}
+                  transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ transformOrigin: 'center' }}
+                >
+                  <span className="absolute w-[24px] h-px rounded-full rotate-45" style={{ background: '#ef4444' }} />
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </motion.span>
         </span>
       </motion.button>
     </>

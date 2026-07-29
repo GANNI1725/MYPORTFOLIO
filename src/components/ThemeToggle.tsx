@@ -64,7 +64,7 @@ function FloatParticles({ show, isDark }: { show: boolean; isDark: boolean }) {
             duration: 2.5 + p.id * 0.4,
             repeat: Infinity,
             delay: p.delay,
-            ease: 'easeInOut',
+            ease: [0.4, 0, 0.2, 1],
           }}
         />
       ))}
@@ -88,7 +88,7 @@ function RotatingShimmer({ isDark }: { isDark: boolean }) {
           filter: 'blur(2px)',
         }}
         animate={{ rotate: 360 }}
-        transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
+        transition={{ duration: 2.5, repeat: Infinity, ease: [0.4, 0, 0.2, 1] }}
       />
     </motion.div>
   )
@@ -201,7 +201,7 @@ export default function ThemeToggle() {
         }}
         transition={{
           scale: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
-          opacity: { duration: 3, repeat: Infinity, ease: 'easeInOut' },
+          opacity: { duration: 3, repeat: Infinity, ease: [0.4, 0, 0.2, 1] },
         }}
       />
 

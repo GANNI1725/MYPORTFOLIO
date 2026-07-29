@@ -7,7 +7,7 @@ import { personalInfo } from '../data'
 
 const staggerItem = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
+  visible: { opacity: 1, y: 0, transition: { ease: [0.16, 1, 0.3, 1] as const } },
 }
 
 const inputClass = 'w-full px-4 py-3 rounded-xl bg-white/5 dark:bg-white/5 border border-[var(--border)] text-primary text-sm focus:outline-none focus:border-accent focus:ring-[3px] focus:ring-accent/20 focus:bg-accent/[0.02] focus:shadow-xl focus:shadow-accent/10 transition-[border-color,box-shadow,background-color] duration-200'
@@ -74,7 +74,7 @@ export default function Contact() {
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-2 space-y-4"
           >
             <a
@@ -121,7 +121,7 @@ export default function Contact() {
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-3"
           >
             <motion.form
@@ -176,7 +176,7 @@ export default function Contact() {
                   disabled={status === 'sending'}
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
-                  className={`group relative w-full md:w-auto h-11 px-6 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-300 ${
+                  className={`group relative w-full md:w-auto h-11 px-6 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-[color,background-color,box-shadow] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                     status === 'success'
                       ? 'bg-accent/20 text-accent'
                       : status === 'error'

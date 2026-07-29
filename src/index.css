@@ -163,11 +163,11 @@ textarea:focus::placeholder {
 }
 
 .animate-float {
-  animation: float 6s ease-in-out infinite;
+  animation: float 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 .animate-pulse-glow {
-  animation: pulse-glow 3s ease-in-out infinite;
+  animation: pulse-glow 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 .glass {
@@ -212,8 +212,9 @@ html {
 .scroll-progress-bar {
   height: 100%;
   background: linear-gradient(90deg, var(--color-accent), #8B5CF6);
-  width: 0%;
-  transition: width 50ms linear;
+  transform: scaleX(0);
+  transform-origin: left;
+  will-change: transform;
 }
 
 img[src="/logo.png"] { filter: invert(1) brightness(0.8); }
@@ -302,7 +303,7 @@ html.to-light::view-transition-new(root) {
   border: 1px solid color-mix(in srgb, var(--primary) 12%, transparent);
   border-radius: 999px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-pill.glass-pill-shine {

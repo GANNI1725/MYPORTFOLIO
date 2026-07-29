@@ -17,9 +17,9 @@ export default function BlogCard({ post, index }: BlogCardProps) {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.4, delay: index * 0.1 }}
+        transition={{ duration: 0.4, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
         whileHover={{ y: -10, scale: 1.02 }}
-        className="glass rounded-2xl p-6 md:p-8 border border-white/10 dark:border-white/5 flex flex-col hover:border-accent/30 hover:shadow-2xl hover:shadow-accent/10 transition-all duration-300"
+        className="glass rounded-2xl p-6 md:p-8 border border-white/10 dark:border-white/5 flex flex-col hover:border-accent/30 hover:shadow-2xl hover:shadow-accent/10 transition-[border-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
       >
         <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-secondary mb-5">
           <span>{post.date}</span>
@@ -72,7 +72,7 @@ export default function BlogCard({ post, index }: BlogCardProps) {
             >
               <button
                 onClick={() => setOpen(false)}
-                className="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-secondary hover:text-primary hover:bg-white/20 transition-all"
+                className="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-secondary hover:text-primary hover:bg-white/20 transition-[color,background-color] duration-200"
                 aria-label="Close"
               >
                 <X size={18} />

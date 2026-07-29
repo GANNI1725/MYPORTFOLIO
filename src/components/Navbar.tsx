@@ -71,7 +71,7 @@ export default function Navbar() {
               <a
                 key={item.name}
                 href={item.href}
-                className={`relative px-3 py-1.5 text-sm font-medium transition-all duration-200 rounded-full whitespace-nowrap ${
+                className={`relative px-3 py-1.5 text-sm font-medium transition-colors duration-200 rounded-full whitespace-nowrap ${
                   isActive
                     ? 'text-accent'
                     : 'text-secondary/70 hover:text-primary hover:bg-accent/5'
@@ -101,13 +101,13 @@ export default function Navbar() {
           <BackgroundMusic />
           <a
             href="/#contact"
-            className="hidden lg:inline-flex h-8 px-4 items-center justify-center rounded-full bg-accent text-white text-sm font-semibold transition-all duration-300 hover:scale-105 active:scale-[0.97] shadow-lg shadow-accent/25"
+            className="hidden lg:inline-flex h-8 px-4 items-center justify-center rounded-full bg-accent text-white text-sm font-semibold transition-[transform,box-shadow] duration-300 hover:scale-105 active:scale-[0.97] shadow-lg shadow-accent/25"
           >
             Hire Me
           </a>
           <button
             onClick={() => setIsMobileOpen(!isMobileOpen)}
-            className="lg:hidden w-11 h-11 rounded-full flex items-center justify-center text-secondary hover:text-primary transition-colors"
+            className="lg:hidden w-11 h-11 rounded-full flex items-center justify-center text-secondary hover:text-primary transition-colors duration-200"
             aria-label="Toggle menu"
           >
             {isMobileOpen ? <X size={16} /> : <Menu size={16} />}

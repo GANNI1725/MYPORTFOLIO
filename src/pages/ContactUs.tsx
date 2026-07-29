@@ -4,15 +4,17 @@ import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-reac
 import emailjs from '@emailjs/browser'
 import SEO from '../components/SEO'
 import { personalInfo } from '../data'
+import { useReducedMotion } from '../hooks/useReducedMotion'
 
 const inputClass = 'w-full px-4 py-3 rounded-xl bg-white/5 dark:bg-white/5 border border-[var(--border)] text-primary text-sm focus:outline-none focus:border-accent focus:ring-[3px] focus:ring-accent/20 focus:bg-accent/[0.02] focus:shadow-xl focus:shadow-accent/10 transition-[border-color,box-shadow,background-color] duration-200'
 
 const staggerItem = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
+  visible: { opacity: 1, y: 0, transition: { ease: [0.16, 1, 0.3, 1] as const } },
 }
 
 export default function ContactUs() {
+  const reduced = useReducedMotion()
   const formRef = useRef<HTMLFormElement>(null)
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
 
@@ -58,9 +60,9 @@ export default function ContactUs() {
       <div className="min-h-screen pt-28 pb-20 px-6 md:px-10">
         <div className="max-w-4xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={reduced ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="mb-12 text-center"
           >
             <p className="text-xs font-semibold tracking-[0.2em] uppercase text-accent mb-3">Contact</p>
@@ -74,9 +76,9 @@ export default function ContactUs() {
 
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
+              initial={reduced ? false : { opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
               className="lg:col-span-2 space-y-4"
             >
               <a
@@ -120,9 +122,9 @@ export default function ContactUs() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
+              initial={reduced ? false : { opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="lg:col-span-3"
             >
               <motion.form
@@ -176,13 +178,13 @@ export default function ContactUs() {
                     disabled={status === 'sending'}
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
-                    className={`group relative w-full md:w-auto h-11 px-6 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-300 ${
-                      status === 'success'
-                        ? 'bg-accent/20 text-accent'
-                        : status === 'error'
-                        ? 'bg-red-900/20 text-red-400'
-                        : 'bg-accent text-white shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/40'
-                    }`}
+                  className={`group relative w-full md:w-auto h-11 px-6 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-[color,background-color,box-shadow] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                    status === 'success'
+                      ? 'bg-accent/20 text-accent'
+                      : status === 'error'
+                      ? 'bg-red-900/20 text-red-400'
+                      : 'bg-accent text-white shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/40'
+                  }`}
                   >
                     {status === 'idle' && (
                       <><Send size={14} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /> Send Message</>

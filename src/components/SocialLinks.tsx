@@ -20,7 +20,7 @@ export default function SocialLinks({ links, delay = 0 }: SocialLinksProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay }}
+      transition={{ duration: 0.5, delay, ease: [0.16, 1, 0.3, 1] }}
       className="flex gap-3"
     >
       {links.map((social) => (
@@ -29,7 +29,7 @@ export default function SocialLinks({ links, delay = 0 }: SocialLinksProps) {
             href={social.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-11 h-11 rounded-full bg-white/10 dark:bg-white/5 border border-white/10 flex items-center justify-center text-secondary transition-all duration-300 hover:scale-110 active:scale-95"
+            className="w-11 h-11 rounded-full bg-white/10 dark:bg-white/5 border border-white/10 flex items-center justify-center text-secondary transition-[color,border-color,background-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-110 active:scale-95"
             style={{
               '--social-color': social.color,
               '--social-glow': social.glow,

@@ -13,7 +13,7 @@ export default function SectionHeading({ label, title, subtitle }: SectionHeadin
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.4 }}
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         className="inline-block text-xs font-semibold tracking-[0.2em] uppercase text-accent mb-4"
       >
         {label}
@@ -32,7 +32,7 @@ export default function SectionHeading({ label, title, subtitle }: SectionHeadin
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.1 }}
+          transition={{ duration: 0.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           className="text-secondary mt-3 max-w-lg mx-auto"
         >
           {subtitle}

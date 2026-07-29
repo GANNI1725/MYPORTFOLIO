@@ -55,7 +55,7 @@ function BackToTop() {
           exit={{ opacity: 0, scale: 0.5 }}
           transition={{ type: 'spring', stiffness: 300, damping: 25 }}
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="fixed bottom-6 right-6 z-50 w-11 h-11 rounded-full bg-accent text-white flex items-center justify-center shadow-lg shadow-accent/25 hover:bg-accent-hover hover:shadow-xl hover:shadow-accent/30 hover:ring-2 hover:ring-accent/30 transition-all duration-200 hover:scale-110 active:scale-95"
+          className="fixed bottom-6 right-6 z-50 w-11 h-11 rounded-full bg-accent text-white flex items-center justify-center shadow-lg shadow-accent/25 hover:bg-accent-hover hover:shadow-xl hover:shadow-accent/30 hover:ring-2 hover:ring-accent/30 transition-[background-color,box-shadow,transform] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-110 active:scale-95"
           aria-label="Back to top"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
@@ -69,7 +69,7 @@ function BackToTop() {
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0 },
+  visible: { opacity: 1, y: 0, transition: { ease: [0.16, 1, 0.3, 1] as const } },
 }
 
 export default function Footer() {
@@ -101,7 +101,7 @@ export default function Footer() {
                     href={s.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-full bg-white/[0.06] dark:bg-white/[0.04] border border-[var(--border)] flex items-center justify-center text-secondary/70 transition-all duration-300 hover:scale-110 active:scale-95"
+                    className="w-10 h-10 rounded-full bg-white/[0.06] dark:bg-white/[0.04] border border-[var(--border)] flex items-center justify-center text-secondary/70 transition-[color,border-color,background-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-110 active:scale-95"
                     style={{ '--sc': s.color, '--sg': s.glow } as React.CSSProperties}
                     aria-label={s.label}
                     onMouseEnter={(e) => {

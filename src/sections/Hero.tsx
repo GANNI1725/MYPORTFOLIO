@@ -116,7 +116,7 @@ function PortraitSection() {
     <motion.div
       initial={{ opacity: 0, scale: 0.9, y: 30 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 0, ease: 'linear' }}
+      transition={{ duration: 0.8, delay: 0, ease: [0.16, 1, 0.3, 1] }}
       className="relative w-full h-full flex items-center justify-center"
     >
       <div className="absolute w-[627px] h-[627px] md:w-[765px] md:h-[765px] rounded-full bg-gradient-to-br from-accent/8 via-accent/3 to-transparent blur-2xl" />
@@ -133,7 +133,7 @@ function PortraitSection() {
               ? undefined
               : {
                   y: [0, -5, 0],
-                  transition: { duration: 4, ease: 'easeInOut', repeat: Infinity },
+                  transition: { duration: 4, ease: [0.4, 0, 0.2, 1], repeat: Infinity },
                 }
           }
           className="w-full"
@@ -173,7 +173,7 @@ function PortraitSection() {
         <motion.div
           className="absolute -bottom-4 left-1/2 -translate-x-1/2"
           animate={reduced ? undefined : { opacity: [0.2, 0.4, 0.2] }}
-          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 3, repeat: Infinity, ease: [0.4, 0, 0.2, 1] }}
         >
           <div className="w-[312px] h-14 bg-accent/10 blur-2xl rounded-full" />
         </motion.div>
@@ -221,7 +221,7 @@ export default function Hero() {
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight text-left text-balance text-primary"
               style={{
                 fontFamily: "'Alvera Demo', serif",
-                animation: reduced ? 'none' : 'name-glow 3.5s ease-in-out 0.8s infinite',
+                animation: reduced ? 'none' : 'name-glow 3.5s cubic-bezier(0.4,0,0.2,1) 0.8s infinite',
               }}
             >
               {reduced
@@ -266,17 +266,13 @@ export default function Hero() {
               Frontend Developer
             </motion.h2>
 
-            <motion.p className="text-base md:text-lg text-secondary max-w-lg leading-relaxed">
-              {(reduced ? personalInfo.tagline : personalInfo.tagline).split("").map((char, i) => (
-                <motion.span
-                  key={i}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.005, delay: 1.0 + i * 0.006 }}
-                >
-                  {char}
-                </motion.span>
-              ))}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 1.0, ease: [0.16, 1, 0.3, 1] }}
+              className="text-base md:text-lg text-secondary max-w-lg leading-relaxed"
+            >
+              {personalInfo.tagline}
             </motion.p>
 
             <SocialLinks links={socialLinks} delay={1.8} />
@@ -333,7 +329,7 @@ export default function Hero() {
         className="absolute bottom-6 left-1/2 -translate-x-1/2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, y: [0, 8, 0] }}
-        transition={{ opacity: { delay: 0.6 }, y: { duration: 2, repeat: Infinity, ease: 'easeInOut' } }}
+        transition={{ opacity: { delay: 0.6, ease: [0.16, 1, 0.3, 1] }, y: { duration: 2, repeat: Infinity, ease: [0.4, 0, 0.2, 1] } }}
       >
         <div className="w-6 h-10 rounded-full border border-white/10 flex items-start justify-center p-1.5">
           <div className="w-1 h-2 rounded-full bg-accent/60" />

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import SEO from '../components/SEO'
+import { useReducedMotion } from '../hooks/useReducedMotion'
 
 const sections = [
   {
@@ -51,6 +52,7 @@ const itemAnim = {
 }
 
 export default function Terms() {
+  const reduced = useReducedMotion()
   return (
     <>
       <SEO
@@ -61,9 +63,9 @@ export default function Terms() {
       <div className="min-h-screen pt-28 pb-20 px-6 md:px-10">
         <div className="max-w-3xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={reduced ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="mb-12"
           >
             <p className="text-xs font-semibold tracking-[0.2em] uppercase text-accent mb-3">Legal</p>
@@ -74,13 +76,13 @@ export default function Terms() {
           </motion.div>
 
           <motion.div
-            variants={container}
-            initial="hidden"
-            animate="visible"
+            variants={reduced ? undefined : container}
+            initial={reduced ? undefined : "hidden"}
+            animate={reduced ? undefined : "visible"}
             className="space-y-10"
           >
             {sections.map((s) => (
-              <motion.div key={s.title} variants={itemAnim}>
+              <motion.div key={s.title} variants={reduced ? undefined : itemAnim} transition={reduced ? undefined : { ease: [0.16, 1, 0.3, 1] }}>
                 <h2 className="text-lg font-bold text-primary mb-2">{s.title}</h2>
                 <p className="text-sm text-secondary leading-relaxed">{s.content}</p>
               </motion.div>
