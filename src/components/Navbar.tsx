@@ -4,6 +4,7 @@ import { Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Logo from './Logo'
 import ThemeToggle from './ThemeToggle'
+import BackgroundMusic from './BackgroundMusic'
 
 const navItems = [
   { name: 'Home', href: '/#home' },
@@ -97,6 +98,7 @@ export default function Navbar() {
         <div className={`glass-pill flex items-center ${pillGap} ${pillPad} ${pillShine}`}>
           <ThemeToggle />
           <div className="w-px h-5 bg-[var(--border)]" />
+          <BackgroundMusic />
           <a
             href="/#contact"
             className="hidden lg:inline-flex h-8 px-4 items-center justify-center rounded-full bg-accent text-white text-sm font-semibold transition-all duration-300 hover:scale-105 active:scale-[0.97] shadow-lg shadow-accent/25"

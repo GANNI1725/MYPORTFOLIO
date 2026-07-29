@@ -3,7 +3,6 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './sections/Footer'
 import ErrorBoundary from './components/ErrorBoundary'
-import BackgroundMusic from './components/BackgroundMusic'
 import Home from './pages/Home'
 import Privacy from './pages/Privacy'
 import AboutUs from './pages/AboutUs'
@@ -56,7 +55,6 @@ export default function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
-      <BackgroundMusic />
     </ErrorBoundary>
   )
 }
