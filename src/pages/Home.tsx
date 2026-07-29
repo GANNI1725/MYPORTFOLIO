@@ -12,12 +12,9 @@ import Contact from '../sections/Contact'
 
 export default function Home() {
   useEffect(() => {
-    const hash = window.location.hash
-    if (hash) {
-      const el = document.getElementById(hash.slice(1))
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' })
-      }
+    window.scrollTo(0, 0)
+    if (window.location.hash) {
+      history.replaceState(null, '', window.location.pathname)
     }
   }, [])
 
