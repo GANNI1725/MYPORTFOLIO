@@ -1,5 +1,3 @@
-import { motion } from 'framer-motion'
-
 interface SocialLink {
   label: string
   href: string
@@ -17,11 +15,9 @@ interface SocialLinksProps {
 
 export default function SocialLinks({ links, delay = 0 }: SocialLinksProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay }}
-      className="flex gap-3"
+    <div
+      className="flex gap-3 reveal-up"
+      style={{ animationDelay: `${delay}s` }}
     >
       {links.map((social) => (
         <div key={social.label} className="relative group/tooltip">
@@ -60,6 +56,6 @@ export default function SocialLinks({ links, delay = 0 }: SocialLinksProps) {
           </span>
         </div>
       ))}
-    </motion.div>
+    </div>
   )
 }

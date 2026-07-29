@@ -1,4 +1,4 @@
-import { useRef, useCallback, useState, useMemo } from 'react'
+import { useRef, useCallback, useState } from 'react'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
 import { ArrowDown } from 'lucide-react'
 import { personalInfo, stats } from '../data'
@@ -113,12 +113,7 @@ function PortraitSection() {
   }, [mouseX, mouseY])
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9, y: 30 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 0, ease: 'linear' }}
-      className="relative w-full h-full flex items-center justify-center"
-    >
+    <div className="relative w-full h-full flex items-center justify-center">
       <div className="absolute w-[627px] h-[627px] md:w-[765px] md:h-[765px] rounded-full bg-gradient-to-br from-accent/8 via-accent/3 to-transparent blur-2xl" />
       <div className="absolute w-[836px] h-[836px] md:w-[1043px] md:h-[1043px] rounded-full bg-accent/3 blur-[80px]" />
 
@@ -127,16 +122,8 @@ function PortraitSection() {
       </div>
 
       <div className="relative w-[446px] md:w-[584px]">
-        <motion.div
-          animate={
-            reduced
-              ? undefined
-              : {
-                  y: [0, -5, 0],
-                  transition: { duration: 4, ease: 'easeInOut', repeat: Infinity },
-                }
-          }
-          className="w-full"
+        <div
+          className="w-full [animation:hero-float_4s_ease-in-out_infinite]"
         >
           <div
             ref={containerRef}
@@ -159,26 +146,29 @@ function PortraitSection() {
                   </div>
                 </div>
               ) : (
-                <img
-                  src={personalInfo.avatar}
-                  alt={personalInfo.name}
-                  className="w-full aspect-[3/4] object-contain"
-                  onError={() => setImgError(true)}
-                />
+                <picture>
+                  <source srcSet="/hero-545.avif" type="image/avif" />
+                  <source srcSet="/hero-545.webp" type="image/webp" />
+                  <img
+                    src="/hero.png"
+                    alt={personalInfo.name}
+                    width={545}
+                    height={800}
+                    className="w-full aspect-[3/4] object-contain"
+                    fetchPriority="high"
+                    onError={() => setImgError(true)}
+                  />
+                </picture>
               )}
             </motion.div>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          className="absolute -bottom-4 left-1/2 -translate-x-1/2"
-          animate={reduced ? undefined : { opacity: [0.2, 0.4, 0.2] }}
-          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-        >
+        <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 opacity-20 [animation:hero-glow_3s_ease-in-out_infinite]">
           <div className="w-[312px] h-14 bg-accent/10 blur-2xl rounded-full" />
-        </motion.div>
+        </div>
       </div>
-    </motion.div>
+    </div>
   )
 }
 
@@ -186,14 +176,6 @@ const nameChars = "Ganesh Prasad\nBhandari".split("")
 
 export default function Hero() {
   const reduced = useReducedMotion()
-  const shuffleOrder = useMemo(() => {
-    const order = Array.from({ length: nameChars.length }, (_, i) => i)
-    for (let j = order.length - 1; j > 0; j--) {
-      const k = Math.floor(Math.random() * (j + 1));
-      [order[j], order[k]] = [order[k], order[j]]
-    }
-    return order
-  }, [])
 
   return (
     <section
@@ -206,79 +188,58 @@ export default function Hero() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="flex flex-col gap-5 z-10">
             <motion.p
-              initial={{ opacity: 0, y: 10 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
               className="text-xs font-semibold tracking-[0.2em] uppercase text-secondary"
             >
               Hi I Am
             </motion.p>
 
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight text-left text-balance text-primary"
               style={{
                 fontFamily: "'Alvera Demo', serif",
                 animation: reduced ? 'none' : 'name-glow 3.5s ease-in-out 0.8s infinite',
               }}
             >
-              {reduced
-                ? "Ganesh Prasad \n Bhandari"
-                : nameChars.map((char, i) =>
-                    char === " " ? (
-                      <span key={i} className="inline-block w-[0.3em]" />
-                    ) : char === "\n" ? (
-                      <div key={i} className="w-full" />
-                    ) : (
-                      <motion.span
-                        key={i}
-                        className="inline-block"
-                        initial={{ opacity: 0, y: 80, scale: 0.2, rotate: -20, color: '#60A5FA', filter: 'blur(8px)' }}
-                        animate={{ opacity: 1, y: 0, scale: 1, rotate: 0, color: 'var(--primary)', filter: 'blur(0px)' }}
-                        transition={{
-                          type: 'spring',
-                          stiffness: 220,
-                          damping: 11,
-                          mass: 0.4,
-                          delay: shuffleOrder.indexOf(i) * 0.02,
-                        }}
-                      >
-                        {char}
-                      </motion.span>
-                    )
-                  )}
+              {nameChars.map((char, i) =>
+                char === "\n" ? (
+                  <br key={i} />
+                ) : (
+                  <span
+                    key={i}
+                    className="inline-block char-reveal"
+                    style={{ animationDelay: `${0.05 + (i * 0.03)}s` }}
+                  >
+                    {char === " " ? "\u00A0" : char}
+                  </span>
+                )
+              )}
             </motion.h1>
 
             <motion.h2
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              initial={false}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.35, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-accent leading-tight"
             >
               Frontend Developer
             </motion.h2>
 
-            <motion.p className="text-base md:text-lg text-secondary max-w-lg leading-relaxed">
-              {(reduced ? personalInfo.tagline : personalInfo.tagline).split("").map((char, i) => (
-                <motion.span
-                  key={i}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.005, delay: 1.0 + i * 0.006 }}
-                >
-                  {char}
-                </motion.span>
-              ))}
+            <motion.p
+              initial={false}
+              animate={{ opacity: 1 }}
+              className="text-base md:text-lg text-secondary max-w-lg leading-relaxed"
+            >
+              {personalInfo.tagline}
             </motion.p>
 
             <SocialLinks links={socialLinks} delay={1.8} />
 
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 2.0, ease: [0.16, 1, 0.3, 1] }}
               className="flex flex-wrap gap-3"
             >
               <MagneticWrap>
@@ -329,16 +290,11 @@ export default function Hero() {
         </div>
       </div>
 
-      <motion.div
-        className="absolute bottom-6 left-1/2 -translate-x-1/2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1, y: [0, 8, 0] }}
-        transition={{ opacity: { delay: 0.6 }, y: { duration: 2, repeat: Infinity, ease: 'easeInOut' } }}
-      >
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 opacity-0 [animation:fadeInUp_0.6s_ease-out_0.6s_forwards]">
         <div className="w-6 h-10 rounded-full border border-white/10 flex items-start justify-center p-1.5">
           <div className="w-1 h-2 rounded-full bg-accent/60" />
         </div>
-      </motion.div>
+      </div>
     </section>
   )
 }

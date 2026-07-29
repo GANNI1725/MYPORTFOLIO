@@ -6,7 +6,7 @@ export const personalInfo = {
   phone: '+977 9848958471',
   location: 'Tilottama-6, Manigram, Rupandehi, Nepal',
   resumeUrl: '#',
-  avatar: '/hero.png',
+  avatar: '/hero-545.webp',
   social: {
     github: 'https://github.com/GANNI1725',
     linkedin: 'https://www.linkedin.com/in/ganesh-prasad-bhandari-b54a34323',
@@ -127,7 +127,7 @@ export const projects: Project[] = [
     subtitle: 'Travel Recommendation System',
     category: 'Full Stack',
     description: 'A smart recommendation platform that suggests travel destinations and itineraries based on user preferences and historical data.',
-    image: '/projects/travelbuddy.png',
+    image: '/projects/travelbuddy-903.webp',
     techStack: ['React', 'Node.js', 'MongoDB', 'Tailwind CSS'],
   },
   {
@@ -135,7 +135,7 @@ export const projects: Project[] = [
     subtitle: 'Restaurant Menu System',
     category: 'Full Stack',
     description: 'A contactless ordering system with real-time menu updates and seamless customer ordering flow for restaurants.',
-    image: '/projects/digital-menu.jpg',
+    image: '/projects/digital-menu-960.webp',
     techStack: ['Next.js', 'PostgreSQL', 'Prisma', 'Tailwind CSS'],
   },
   {
@@ -143,7 +143,7 @@ export const projects: Project[] = [
     subtitle: 'Farm-to-Home E-Commerce',
     category: 'Frontend',
     description: 'An e-commerce platform connecting local Nepali farmers directly to consumers with organic produce listings and cart management.',
-    image: '/projects/hariyalibazar.png',
+    image: '/projects/hariyalibazar-960.webp',
     link: 'https://hariyali-bazar.vercel.app/',
     techStack: ['React', 'Firebase', 'Tailwind CSS', 'Vercel'],
   },

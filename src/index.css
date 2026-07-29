@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: 'Alvera Demo';
-  src: url('/alvera-demo/AlveraDEMO-BoldCircle.otf') format('opentype');
+  src: url('/alvera-demo/AlveraDEMO-BoldCircle.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -311,6 +311,46 @@ html.to-light::view-transition-new(root) {
   box-shadow:
     0 8px 32px rgba(0,0,0,0.15),
     inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+@keyframes char-reveal {
+  0% { opacity: 0; transform: translateY(80px) scale(0.2) rotate(-20deg); filter: blur(8px); color: #60A5FA; }
+  100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); filter: blur(0px); color: var(--primary); }
+}
+
+@keyframes hero-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes hero-glow {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.char-reveal {
+  display: inline-block;
+  animation: char-reveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes reveal-up {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.reveal-up {
+  opacity: 0;
+  animation: reveal-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes heroFadeUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {

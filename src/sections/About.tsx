@@ -64,12 +64,19 @@ export default function About() {
               {imgError ? (
                 <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-purple-500/20" />
               ) : (
-                <img
-                  src={personalInfo.avatar}
-                  alt={personalInfo.name}
-                  className="w-full h-full object-contain"
-                  onError={() => setImgError(true)}
-                />
+                <picture>
+                  <source srcSet="/hero-545.avif" type="image/avif" />
+                  <source srcSet="/hero-545.webp" type="image/webp" />
+                  <img
+                    src="/hero.png"
+                    alt={personalInfo.name}
+                    width={545}
+                    height={800}
+                    className="w-full h-full object-contain"
+                    loading="lazy"
+                    onError={() => setImgError(true)}
+                  />
+                </picture>
               )}
               <div className="absolute inset-0" />
             </motion.div>
