@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
 import SEO from '../components/SEO'
+import RedBloodDrops from '../components/RedBloodDrops'
+import { useTheme } from '../theme/useTheme'
 import Hero from '../sections/Hero'
 import About from '../sections/About'
 import Skills from '../sections/Skills'
@@ -11,6 +13,8 @@ import FAQ from '../components/FAQ'
 import Contact from '../sections/Contact'
 
 export default function Home() {
+  const { theme } = useTheme()
+
   useEffect(() => {
     const navEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined
     const isReload = navEntry?.type === 'reload'
@@ -38,7 +42,24 @@ export default function Home() {
         description="Frontend Developer portfolio of Ganesh Prasad Bhandari — building modern, accessible web experiences with React, Next.js, and Tailwind CSS. Based in Nepal."
         path="/"
       />
-      <main className="grid-bg">
+      <main className="grid-bg relative z-0">
+        {theme === 'red' && (
+          <div
+            className="fixed inset-0 overflow-hidden pointer-events-none"
+            style={{
+              backgroundImage: "url('/Red%20mode%20BG.jpg')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              zIndex: -1,
+            }}
+          />
+        )}
+        {theme === 'red' && (
+          <div className="fixed inset-0 overflow-hidden pointer-events-none z-40">
+            <RedBloodDrops />
+          </div>
+        )}
         <Hero />
         <About />
         <Skills />

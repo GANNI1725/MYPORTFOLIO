@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import MagneticWrap from './MagneticWrap'
 
 interface SocialLink {
   label: string
@@ -24,7 +25,8 @@ export default function SocialLinks({ links, delay = 0 }: SocialLinksProps) {
       className="flex gap-3"
     >
       {links.map((social) => (
-        <div key={social.label} className="relative group/tooltip">
+        <MagneticWrap key={social.label}>
+          <div className="relative group/tooltip">
           <a
             href={social.href}
             target="_blank"
@@ -58,7 +60,8 @@ export default function SocialLinks({ links, delay = 0 }: SocialLinksProps) {
           <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-[var(--surface)] px-2.5 py-1 text-[11px] font-medium text-primary opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 border border-[var(--border)] shadow-lg">
             {social.label}
           </span>
-        </div>
+          </div>
+        </MagneticWrap>
       ))}
     </motion.div>
   )

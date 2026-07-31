@@ -1,11 +1,19 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Music } from 'lucide-react'
+import SkullIcon from './SkullIcon'
+import { useTheme } from '../theme/useTheme'
+import { useMultiClick } from '../hooks/useMultiClick'
 
 const STORAGE_KEY = 'portfolio-music-enabled'
 type Preference = 'on' | 'off' | null
 
 export default function BackgroundMusic() {
+  const { theme, toggleRedMode } = useTheme()
+  const darkSurface = theme !== 'light'
+  const isRed = theme === 'red'
+  const btnRef = useRef<HTMLButtonElement>(null)
+  const { register: registerMultiClick } = useMultiClick(3, 1800)
   const audioRef = useRef<HTMLAudioElement>(null)
   const [playing, setPlaying] = useState(false)
   const [preference, setPreference] = useState<Preference>(() => {
@@ -64,7 +72,11 @@ export default function BackgroundMusic() {
     }
   }, [preference])
 
-  const toggle = () => {
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('music-state-change', { detail: { playing } }))
+  }, [playing, theme])
+
+  const toggle = useCallback(() => {
     const audio = audioRef.current
     if (!audio) return
     if (audio.paused) {
@@ -76,8 +88,24 @@ export default function BackgroundMusic() {
       setPreference('off')
       try { localStorage.setItem(STORAGE_KEY, 'false') } catch {}
       audio.pause()
+      if (theme === 'red') {
+        const rect = btnRef.current?.getBoundingClientRect()
+        const x = rect ? ((rect.left + rect.width / 2) / window.innerWidth) * 100 : 50
+        const y = rect ? ((rect.top + rect.height / 2) / window.innerHeight) * 100 : 50
+        toggleRedMode({ x, y })
+      }
     }
-  }
+  }, [theme, toggleRedMode])
+
+  const handleClick = useCallback(() => {
+    toggle()
+    registerMultiClick(() => {
+      const rect = btnRef.current?.getBoundingClientRect()
+      const x = rect ? ((rect.left + rect.width / 2) / window.innerWidth) * 100 : 50
+      const y = rect ? ((rect.top + rect.height / 2) / window.innerHeight) * 100 : 50
+      toggleRedMode({ x, y })
+    })
+  }, [toggle, registerMultiClick, toggleRedMode])
 
   return (
     <>
@@ -86,53 +114,95 @@ export default function BackgroundMusic() {
       </audio>
 
       <motion.button
-        onClick={toggle}
+        ref={btnRef}
+        onClick={handleClick}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.95 }}
         aria-label={playing ? 'Pause background music' : 'Play background music'}
-        className="relative w-11 h-11 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)] flex items-center justify-center"
+        className={`relative rounded-full outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)] flex items-center justify-center w-11 h-11`}
+        style={{ perspective: 500 }}
       >
-        <motion.div
-          className="absolute inset-0 rounded-full"
-          style={{
-            background: 'color-mix(in srgb, var(--bg) 65%, transparent)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid var(--border)',
-          }}
-          animate={
-            playing
-              ? {
-                  boxShadow: [
-                    '0 0 8px rgba(96,165,250,0.15)',
-                    '0 0 16px rgba(96,165,250,0.3)',
-                    '0 0 8px rgba(96,165,250,0.15)',
-                  ],
-                  borderColor: [
-                    'rgba(96,165,250,0.3)',
-                    'rgba(96,165,250,0.5)',
-                    'rgba(96,165,250,0.3)',
-                  ],
-                }
-              : {
-                  boxShadow: '0 3px 12px rgba(0,0,0,0.1)',
-                  borderColor: 'var(--border)',
-                }
-          }
-          transition={{
-            duration: 2,
-            repeat: playing ? Infinity : 0,
-            ease: [0.4, 0, 0.2, 1],
-          }}
-        />
+        {isRed ? (
+          <motion.div
+            className="absolute inset-0 rounded-full"
+            style={{
+              background: 'radial-gradient(circle at center, rgba(255,120,70,0.4), transparent 70%)',
+              filter: 'blur(9px)',
+            }}
+            animate={{ scale: 1.2, opacity: [0.2, 0.45, 0.2] }}
+            transition={{ scale: { duration: 0.35, ease: [0.16, 1, 0.3, 1] }, opacity: { duration: 3, repeat: Infinity, ease: [0.4, 0, 0.2, 1] } }}
+          />
+        ) : (
+          <>
+            <motion.div
+              className="absolute inset-0 rounded-full"
+              style={{
+                background: darkSurface
+                  ? 'radial-gradient(circle at center, rgba(59,130,246,0.35), transparent 70%)'
+                  : 'radial-gradient(circle at center, rgba(59,130,246,0.15), transparent 70%)',
+                filter: 'blur(8px)',
+              }}
+              animate={{ scale: 1.15, opacity: [0.25, 0.45, 0.25] }}
+              transition={{ scale: { duration: 0.35, ease: [0.16, 1, 0.3, 1] }, opacity: { duration: 3, repeat: Infinity, ease: [0.4, 0, 0.2, 1] } }}
+            />
 
-        <span className="relative z-10 flex items-center justify-center">
+            <motion.div
+              className="absolute inset-0 rounded-full backdrop-blur-xl"
+              style={{
+                background: darkSurface ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.06)',
+                border: '1px solid',
+                borderColor: darkSurface ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)',
+              }}
+              animate={
+                playing
+                  ? {
+                      borderColor: [
+                        'rgba(96,165,250,0.3)',
+                        'rgba(96,165,250,0.5)',
+                        'rgba(96,165,250,0.3)',
+                      ],
+                      boxShadow: [
+                        '0 0 8px rgba(96,165,250,0.15)',
+                        '0 0 16px rgba(96,165,250,0.3)',
+                        '0 0 8px rgba(96,165,250,0.15)',
+                      ],
+                    }
+                  : {
+                      borderColor: darkSurface ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)',
+                      boxShadow: darkSurface
+                        ? '0 3px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)'
+                        : '0 3px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.5)',
+                    }
+              }
+              transition={{
+                duration: 2,
+                repeat: playing ? Infinity : 0,
+                ease: [0.4, 0, 0.2, 1],
+              }}
+            >
+              <div
+                className="absolute inset-0 rounded-full"
+                style={{
+                  background: darkSurface
+                    ? 'radial-gradient(circle at 30% 25%, rgba(255,255,255,0.15), transparent 70%)'
+                    : 'radial-gradient(circle at 30% 25%, rgba(255,255,255,0.4), transparent 70%)',
+                }}
+              />
+            </motion.div>
+          </>
+        )}
+
+        <span className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
           <motion.span
             className="relative flex items-center justify-center"
-            animate={playing ? { rotate: 360 } : { rotate: 0 }}
-            transition={playing ? { duration: 2, repeat: Infinity, ease: 'linear' } : { duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            animate={playing && !isRed ? { rotate: 360 } : { rotate: 0 }}
+            transition={playing && !isRed ? { duration: 2, repeat: Infinity, ease: 'linear' } : { duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           >
-            <Music size={14} className={playing ? 'text-accent' : 'text-secondary'} />
+            {isRed ? (
+              <SkullIcon size={26} />
+            ) : (
+              <Music size={14} className={playing ? 'text-accent' : 'text-secondary'} />
+            )}
             <AnimatePresence>
               {!playing && (
                 <motion.span
@@ -143,7 +213,10 @@ export default function BackgroundMusic() {
                   transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                   style={{ transformOrigin: 'center' }}
                 >
-                  <span className="absolute w-[24px] h-px rounded-full rotate-45" style={{ background: '#ef4444' }} />
+                  <span
+                    className="absolute h-px rounded-full rotate-45"
+                    style={{ background: '#ef4444', width: 24 }}
+                  />
                 </motion.span>
               )}
             </AnimatePresence>

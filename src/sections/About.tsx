@@ -3,6 +3,7 @@ import { motion, useMotionValue, useSpring } from 'framer-motion'
 import SectionHeading from '../components/SectionHeading'
 import { aboutContent, personalInfo } from '../data'
 import { useReducedMotion } from '../hooks/useReducedMotion'
+import { useTheme } from '../theme/useTheme'
 
 const wordReveal = {
   hidden: { opacity: 0, y: 12 },
@@ -10,6 +11,7 @@ const wordReveal = {
 }
 
 export default function About() {
+  const { theme } = useTheme()
   const [imgError, setImgError] = useState(false)
   const reduced = useReducedMotion()
   const imgRef = useRef<HTMLDivElement>(null)
@@ -65,7 +67,7 @@ export default function About() {
                 <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-purple-500/20" />
               ) : (
                 <img
-                  src={personalInfo.avatar}
+                  src={theme === 'red' ? '/Red%20mode%20my%20photo%20ok.png' : personalInfo.avatar}
                   alt={personalInfo.name}
                   className="w-full h-full object-contain"
                   onError={() => setImgError(true)}
