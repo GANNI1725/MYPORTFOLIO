@@ -134,7 +134,7 @@ function PortraitSection() {
                 </div>
               ) : (
                 <img
-                  src={theme === 'red' ? '/Red%20mode%20my%20photo%20ok.png' : personalInfo.avatar}
+                  src={theme === 'red' ? '/Red%20mode%20my%20photo.png' : personalInfo.avatar}
                   alt={personalInfo.name}
                   className="w-full aspect-[3/4] object-contain"
                   onError={() => setImgError(true)}

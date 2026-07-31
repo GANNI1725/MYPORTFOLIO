@@ -67,7 +67,7 @@ export default function About() {
                 <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-purple-500/20" />
               ) : (
                 <img
-                  src={theme === 'red' ? '/Red%20mode%20my%20photo%20ok.png' : personalInfo.avatar}
+                  src={theme === 'red' ? '/Red%20mode%20my%20photo.png' : personalInfo.avatar}
                   alt={personalInfo.name}
                   className="w-full h-full object-contain"
                   onError={() => setImgError(true)}
