@@ -65,22 +65,17 @@ export default function RedBloodDrops() {
     window.addEventListener('resize', resize, { passive: true })
 
     const drawDrop = (d: Drop) => {
-      const s = d.size
-      const grad = ctx.createRadialGradient(d.x - s * 0.3, d.y - s * 0.5, s * 0.1, d.x, d.y, s)
-      grad.addColorStop(0, `rgba(255,120,100,${0.85 * d.opacity})`)
-      grad.addColorStop(0.5, `rgba(198,40,40,${0.7 * d.opacity})`)
-      grad.addColorStop(1, `rgba(90,8,12,${0.75 * d.opacity})`)
-      ctx.fillStyle = grad
+      const len = d.size * 5
+      const tail = ctx.createLinearGradient(d.x, d.y - len, d.x, d.y)
+      tail.addColorStop(0, 'rgba(200,40,40,0)')
+      tail.addColorStop(1, `rgba(255,90,75,${0.9 * d.opacity})`)
+      ctx.strokeStyle = tail
+      ctx.lineWidth = d.size
+      ctx.lineCap = 'round'
       ctx.beginPath()
-      ctx.moveTo(d.x, d.y - s)
-      ctx.bezierCurveTo(d.x + s * 0.75, d.y - s * 0.55, d.x + s * 0.8, d.y + s * 0.25, d.x + s * 0.45, d.y + s * 0.5)
-      ctx.quadraticCurveTo(d.x, d.y + s * 0.9, d.x - s * 0.45, d.y + s * 0.5)
-      ctx.bezierCurveTo(d.x - s * 0.8, d.y + s * 0.25, d.x - s * 0.75, d.y - s * 0.55, d.x, d.y - s)
-      ctx.fill()
-      ctx.fillStyle = `rgba(255,255,255,${0.5 * d.opacity})`
-      ctx.beginPath()
-      ctx.ellipse(d.x - s * 0.25, d.y - s * 0.4, s * 0.12, s * 0.08, -0.4, 0, Math.PI * 2)
-      ctx.fill()
+      ctx.moveTo(d.x, d.y - len)
+      ctx.lineTo(d.x, d.y)
+      ctx.stroke()
     }
 
     const drawSplash = (s: Splash) => {
@@ -105,23 +100,23 @@ export default function RedBloodDrops() {
     }
 
     const burst = (x: number, y: number) => {
-      const n = 5 + Math.floor(Math.random() * 4)
+      const n = 3 + Math.floor(Math.random() * 3)
       for (let i = 0; i < n; i++) {
         if (splashes.length >= 400) break
         const a = Math.random() * Math.PI * 2
-        const sp = 30 + Math.random() * 90
+        const sp = 20 + Math.random() * 60
         splashes.push({
           x,
           y,
           vx: Math.cos(a) * sp,
-          vy: Math.sin(a) * sp - 55,
-          size: 1.5 + Math.random() * 2,
+          vy: Math.sin(a) * sp - 40,
+          size: 0.7 + Math.random() * 1.1,
           life: 0,
-          maxLife: 0.35 + Math.random() * 0.25,
+          maxLife: 0.25 + Math.random() * 0.2,
         })
       }
       if (flashes.length < 30) {
-        flashes.push({ x, y, life: 0, maxLife: 0.25, maxR: 14 + Math.random() * 12 })
+        flashes.push({ x, y, life: 0, maxLife: 0.2, maxR: 6 + Math.random() * 6 })
       }
     }
 
@@ -131,17 +126,17 @@ export default function RedBloodDrops() {
 
       if (dt > 0) {
         spawnAcc += dt
-        while (spawnAcc >= 0.012 && drops.length < 220) {
-          spawnAcc -= 0.012
-          const size = 4 + Math.random() * 3
+        while (spawnAcc >= 0.008 && drops.length < 260) {
+          spawnAcc -= 0.008
+          const size = 1.2 + Math.random() * 1.3
           drops.push({
             x: 2 + Math.random() * (w - 4),
             y: -20 - Math.random() * 40,
-            vx: (Math.random() - 0.5) * 30,
-            vy: 240 + Math.random() * 160,
+            vx: (Math.random() - 0.5) * 40,
+            vy: 900 + Math.random() * 500,
             size,
             landY: h,
-            opacity: 0.55 + Math.random() * 0.4,
+            opacity: 0.5 + Math.random() * 0.35,
           })
         }
       }
