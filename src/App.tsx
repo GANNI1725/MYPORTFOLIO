@@ -1,17 +1,18 @@
-import { useEffect, useState } from 'react'
+import { Suspense, lazy, useEffect, useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { ThemeProvider } from './theme/ThemeProvider'
 import Navbar from './components/Navbar'
 import Footer from './sections/Footer'
 import ErrorBoundary from './components/ErrorBoundary'
-import RedModeLoader from './components/RedModeLoader'
 import Home from './pages/Home'
-import Privacy from './pages/Privacy'
-import AboutUs from './pages/AboutUs'
-import Terms from './pages/Terms'
-import ContactUs from './pages/ContactUs'
-import NotFound from './pages/NotFound'
-import ServerError from './pages/ServerError'
+
+const RedModeLoader = lazy(() => import('./components/RedModeLoader'))
+const Privacy = lazy(() => import('./pages/Privacy'))
+const AboutUs = lazy(() => import('./pages/AboutUs'))
+const Terms = lazy(() => import('./pages/Terms'))
+const ContactUs = lazy(() => import('./pages/ContactUs'))
+const NotFound = lazy(() => import('./pages/NotFound'))
+const ServerError = lazy(() => import('./pages/ServerError'))
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation()
@@ -65,17 +66,19 @@ export default function App() {
         <ScrollToTop />
         <ScrollProgress />
         <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/contact-us" element={<ContactUs />} />
-          <Route path="/500" element={<ServerError />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Suspense fallback={null}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/contact-us" element={<ContactUs />} />
+            <Route path="/500" element={<ServerError />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <RedModeLoader />
+        </Suspense>
         <Footer />
-        <RedModeLoader />
       </ErrorBoundary>
     </ThemeProvider>
   )
