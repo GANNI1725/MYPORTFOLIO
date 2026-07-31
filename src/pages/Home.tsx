@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import SEO from '../components/SEO'
 import RedBloodDrops from '../components/RedBloodDrops'
+import RedLightning from '../components/RedLightning'
 import { useTheme } from '../theme/useTheme'
 import Hero from '../sections/Hero'
 import About from '../sections/About'
@@ -58,6 +59,11 @@ export default function Home() {
         {theme === 'red' && (
           <div className="fixed inset-0 overflow-hidden pointer-events-none z-40">
             <RedBloodDrops />
+          </div>
+        )}
+        {theme === 'red' && (
+          <div className="fixed inset-0 overflow-hidden pointer-events-none z-30">
+            <RedLightning />
           </div>
         )}
         <Hero />
