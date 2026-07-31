@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useState } from 'react'
+import { Suspense, lazy, useEffect, useLayoutEffect, useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { ThemeProvider } from './theme/ThemeProvider'
 import Navbar from './components/Navbar'
@@ -64,6 +64,16 @@ function ScrollProgress() {
 }
 
 export default function App() {
+  useLayoutEffect(() => {
+    const html = document.documentElement
+    const prev = html.style.scrollBehavior
+    html.style.scrollBehavior = 'auto'
+    window.scrollTo(0, 0)
+    html.style.scrollBehavior = prev
+    html.style.overflow = ''
+    if (document.body) document.body.style.overflow = ''
+  }, [])
+
   return (
     <ThemeProvider>
       <ErrorBoundary fallback={<ServerError />}>

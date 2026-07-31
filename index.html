@@ -4,20 +4,44 @@
     <script>
       history.scrollRestoration = 'manual';
       (function () {
-        function scrollTop() {
-          if (window.location.hash) return;
-          var html = document.documentElement;
+        if (window.location.hash) return;
+        var html = document.documentElement;
+        function forceTop() {
           var prev = html.style.scrollBehavior;
           html.style.scrollBehavior = 'auto';
           window.scrollTo(0, 0);
           html.style.scrollBehavior = prev;
         }
-        scrollTop();
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', scrollTop);
+        var prevOverflow = html.style.overflow;
+        function lockScroll() {
+          html.style.overflow = 'hidden';
+          if (document.body) document.body.style.overflow = 'hidden';
         }
-        window.addEventListener('load', scrollTop);
-        window.addEventListener('pageshow', scrollTop);
+        function unlockScroll() {
+          html.style.overflow = prevOverflow;
+          if (document.body) document.body.style.overflow = '';
+        }
+        lockScroll();
+        forceTop();
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', forceTop);
+        }
+        window.addEventListener('load', forceTop);
+        window.addEventListener('pagehide', lockScroll);
+        window.addEventListener('pageshow', function () {
+          forceTop();
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              forceTop();
+              unlockScroll();
+            });
+          });
+        });
+        setTimeout(function () {
+          if (html.style.overflow === 'hidden') {
+            unlockScroll();
+          }
+        }, 5000);
       })();
     </script>
     <!-- Google tag (gtag.js) -->
