@@ -76,29 +76,6 @@ export default function App() {
         </Routes>
         <Footer />
         <RedModeLoader />
-        <svg width="0" height="0" style={{ position: 'absolute', overflow: 'hidden' }} aria-hidden="true">
-          <defs>
-            <filter id="cursed-smoke" x="-25%" y="-35%" width="150%" height="170%">
-              <feTurbulence type="fractalNoise" baseFrequency="0.02 0.11" numOctaves="2" seed="7" result="noise">
-                <animate attributeName="baseFrequency" dur="8s" values="0.02 0.11;0.028 0.14;0.02 0.11" repeatCount="indefinite" />
-              </feTurbulence>
-              <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G" />
-            </filter>
-            <filter id="cursed-smoke-strong" x="-30%" y="-40%" width="160%" height="180%">
-              <feTurbulence type="fractalNoise" baseFrequency="0.02 0.11" numOctaves="2" seed="7" result="noise">
-                <animate attributeName="baseFrequency" dur="8s" values="0.02 0.11;0.028 0.14;0.02 0.11" repeatCount="indefinite" />
-              </feTurbulence>
-              <feDisplacementMap in="SourceGraphic" in2="noise" scale="14" xChannelSelector="R" yChannelSelector="G" />
-            </filter>
-            <filter id="red-logo-tint">
-              <feColorMatrix in="SourceGraphic" type="matrix" values="
-                0.9 0.1 0.0 0 0.05
-                0.1 0.4 0.1 0 0.0
-                0.1 0.15 0.35 0 0.0
-                0.0 0.0 0.0 1 0.0" />
-            </filter>
-          </defs>
-        </svg>
       </ErrorBoundary>
     </ThemeProvider>
   )

@@ -16,14 +16,24 @@ const makeBolt = (seed: number): { path: string; branches: string[] } => {
     }
   })()
 
-  let path = 'M100 0'
+  const pts: { x: number; y: number }[] = [{ x: 100, y: 0 }]
   let x = 100
-  const points = 9 + Math.floor(rand() * 5)
+  const points = 12 + Math.floor(rand() * 4)
   const seg = 100 / points
   for (let i = 1; i <= points; i++) {
-    x += (rand() - 0.5) * 60
-    x = Math.max(40, Math.min(160, x))
-    path += ` L${x.toFixed(1)} ${(seg * i).toFixed(1)}`
+    x += (rand() - 0.5) * 90
+    x = Math.max(30, Math.min(170, x))
+    pts.push({ x, y: seg * i })
+  }
+
+  let path = `M${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)}`
+  for (let i = 1; i < pts.length; i++) {
+    const prev = pts[i - 1]
+    const cur = pts[i]
+    const midY = (prev.y + cur.y) / 2
+    const c1 = { x: prev.x + (cur.x - prev.x) * 0.45, y: prev.y + (midY - prev.y) * 0.5 }
+    const c2 = { x: cur.x - (cur.x - prev.x) * 0.45, y: cur.y - (cur.y - midY) * 0.5 }
+    path += ` C${c1.x.toFixed(1)} ${c1.y.toFixed(1)} ${c2.x.toFixed(1)} ${c2.y.toFixed(1)} ${cur.x.toFixed(1)} ${cur.y.toFixed(1)}`
   }
 
   const branches: string[] = []
@@ -31,14 +41,18 @@ const makeBolt = (seed: number): { path: string; branches: string[] } => {
   for (let i = 0; i < branchCount; i++) {
     const by = 12 + rand() * 65
     const dir = rand() > 0.5 ? -1 : 1
-    let bx = x + dir * 6
+    const root = pts[Math.floor(rand() * (pts.length - 2)) + 1]
+    let bx = root.x + dir * 6
     let bpx = `M${bx.toFixed(1)} ${by.toFixed(1)}`
     const bl = 14 + rand() * 24
     const steps = 3 + Math.floor(rand() * 3)
+    let py = by
     for (let s = 1; s <= steps; s++) {
       bx += dir * (bl / steps) * (0.5 + rand())
       const y = by + (s / steps) * 12 + (rand() - 0.5) * 8
-      bpx += ` L${bx.toFixed(1)} ${y.toFixed(1)}`
+      const midY = (py + y) / 2
+      bpx += ` Q${(bx + dir * 4).toFixed(1)} ${midY.toFixed(1)} ${bx.toFixed(1)} ${y.toFixed(1)}`
+      py = y
     }
     branches.push(bpx)
   }
@@ -58,7 +72,7 @@ export default function RedLightning() {
     const strike = () => {
       if (!alive) return
       const id = boltId++
-      setBolts(prev => [...prev.slice(-4), { id, left: 5 + Math.random() * 90, seed: Math.floor(Math.random() * 1e9) }])
+      setBolts(prev => [...prev.slice(-2), { id, left: 5 + Math.random() * 90, seed: Math.floor(Math.random() * 1e9) }])
       window.setTimeout(() => {
         if (alive) setBolts(prev => prev.filter(b => b.id !== id))
       }, 900)
@@ -68,7 +82,7 @@ export default function RedLightning() {
       if (!alive) return
       strike()
       if (Math.random() < 0.3) window.setTimeout(strike, 160)
-    }, 2200)
+    }, 2800)
 
     const start = window.setTimeout(strike, 2800)
     return () => {
@@ -92,7 +106,7 @@ export default function RedLightning() {
                 fill="none"
                 className="red-bolt-halo"
                 stroke="#ff3026"
-                strokeWidth="9"
+                strokeWidth="5"
                 strokeLinejoin="round"
                 strokeLinecap="round"
               />
@@ -101,7 +115,7 @@ export default function RedLightning() {
                 fill="none"
                 className="red-bolt-core"
                 stroke="#ffd9d0"
-                strokeWidth="3.4"
+                strokeWidth="1.8"
                 strokeLinejoin="round"
                 strokeLinecap="round"
               />
@@ -110,7 +124,7 @@ export default function RedLightning() {
                 fill="none"
                 className="red-bolt-inner"
                 stroke="#ffffff"
-                strokeWidth="1.4"
+                strokeWidth="0.8"
                 strokeLinejoin="round"
                 strokeLinecap="round"
               />
@@ -121,7 +135,7 @@ export default function RedLightning() {
                   fill="none"
                   className="red-bolt-branch"
                   stroke="#ff5a4a"
-                  strokeWidth="2"
+                  strokeWidth="1.1"
                   strokeLinejoin="round"
                   strokeLinecap="round"
                 />

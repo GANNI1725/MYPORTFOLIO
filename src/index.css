@@ -370,7 +370,6 @@ html.to-revert::view-transition-new(root) {
 
 [data-theme="red"] :is(h1, h2, h3, h4, h5, h6):not(.red-loader-title) {
   color: #FF5A4A;
-  filter: url(#cursed-smoke-strong) !important;
   animation: cursed-title-smoke 5s ease-in-out infinite !important;
 }
 
@@ -382,7 +381,6 @@ html.to-revert::view-transition-new(root) {
 
 [data-theme="red"] :is(p, li, blockquote, label, figcaption, small, strong, em, th, td, dt, dd, input, textarea, code, pre, time, cite, address):not(.red-loader-sub) {
   color: #FF7A66;
-  filter: url(#cursed-smoke);
 }
 
 [data-theme="red"] :is(p, a, li, blockquote, label, figcaption, small, strong, em, span, button, th, td, dt, dd, input, textarea, code, pre, time, cite, address):not(.red-loader-sub) {
@@ -392,7 +390,6 @@ html.to-revert::view-transition-new(root) {
 
 [data-theme="red"] footer :is(p, a, span, small, strong, em, li, dt, dd, address, time, cite, code, button) {
   color: #FF7A66;
-  filter: url(#cursed-smoke);
   animation: cursed-text-smoke 6s ease-in-out infinite;
 }
 
@@ -529,73 +526,21 @@ html.to-revert::view-transition-new(root) {
   animation: skull-icon-glow 2.4s ease-in-out infinite;
 }
 
-.red-drop {
+.red-drops-canvas {
   position: absolute;
-  top: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
-}
-
-.red-drop-main {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, -90px) scale(0.6);
-  opacity: 0;
-  filter: drop-shadow(0 3px 8px rgba(180, 10, 10, 0.55));
-  animation: red-drop-fall var(--fall-dur, 1.9s) cubic-bezier(0.4, 0, 0.6, 1) forwards;
-}
-
-.red-flash {
-  position: absolute;
-  top: var(--drop-y);
-  left: 50%;
-  width: 80px;
-  height: 80px;
-  border-radius: 9999px;
-  background: radial-gradient(circle, rgba(255, 90, 60, 0.95), rgba(255, 60, 50, 0.35) 45%, transparent 70%);
-  box-shadow: 0 0 30px rgba(255, 60, 50, 0.8);
-  transform: translate(-50%, -50%) scale(0.3);
-  opacity: 0;
-  animation: red-flash 0.55s ease-out both;
-}
-
-@keyframes red-flash {
-  0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0.95; }
-  100% { transform: translate(-50%, -50%) scale(2.2); opacity: 0; }
-}
-
-.red-splash {
-  position: absolute;
-  top: var(--drop-y);
-  left: 50%;
-  border-radius: 9999px;
-  background: radial-gradient(circle at 35% 30%, rgba(255,107,82,0.7), rgba(163,22,33,0.5) 55%, rgba(74,6,9,0.55) 85%);
-  box-shadow: inset 0 0 3px rgba(255, 150, 120, 0.5);
-  transform: translate(-50%, -50%) scale(0);
-  opacity: 0;
-  animation: red-splash 0.8s ease-out both;
-}
-
-@keyframes red-drop-fall {
-  0% { transform: translate(-50%, -90px) scale(0.6); opacity: 0; }
-  8% { opacity: 1; }
-  68% { transform: translate(calc(-50% + var(--drift, 0px)), var(--drop-y)) scale(1); opacity: 1; }
-  72% { transform: translate(calc(-50% + var(--drift, 0px)), var(--drop-y)) scale(1.25); opacity: 0; }
-  100% { transform: translate(calc(-50% + var(--drift, 0px)), var(--drop-y)) scale(1); opacity: 0; }
-}
-
-@keyframes red-splash {
-  0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
-  100% { transform: translate(calc(-50% + var(--sx, 0px)), calc(-50% + var(--sy, 0px))) scale(1); opacity: 0; }
 }
 
 .red-bolt {
   position: absolute;
   top: 0;
   height: 100%;
-  width: 22%;
+  width: 10%;
   opacity: 0;
-  filter: drop-shadow(0 0 14px rgba(255, 50, 40, 0.85)) drop-shadow(0 0 46px rgba(255, 30, 30, 0.55));
+  filter: drop-shadow(0 0 6px rgba(255, 50, 40, 0.6)) drop-shadow(0 0 16px rgba(255, 30, 30, 0.35));
   animation: red-bolt-strike 0.9s steps(1, end) forwards;
 }
 

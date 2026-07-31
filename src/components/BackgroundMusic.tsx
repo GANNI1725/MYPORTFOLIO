@@ -58,17 +58,11 @@ export default function BackgroundMusic() {
       audio.play()
         .catch(() => setPlaying(false))
     }
-    document.addEventListener('click', handler, { once: true })
-    document.addEventListener('keydown', handler, { once: true })
-    document.addEventListener('touchstart', handler, { once: true })
     document.addEventListener('pointerdown', handler, { once: true })
-    document.addEventListener('wheel', handler, { once: true })
+    document.addEventListener('keydown', handler, { once: true })
     return () => {
-      document.removeEventListener('click', handler)
-      document.removeEventListener('keydown', handler)
-      document.removeEventListener('touchstart', handler)
       document.removeEventListener('pointerdown', handler)
-      document.removeEventListener('wheel', handler)
+      document.removeEventListener('keydown', handler)
     }
   }, [preference])
 
