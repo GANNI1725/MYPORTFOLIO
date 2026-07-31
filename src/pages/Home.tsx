@@ -21,7 +21,11 @@ export default function Home() {
     const isReload = navEntry?.type === 'reload'
 
     if (isReload) {
-      window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior })
+      const html = document.documentElement
+      const prev = html.style.scrollBehavior
+      html.style.scrollBehavior = 'auto'
+      window.scrollTo(0, 0)
+      html.style.scrollBehavior = prev
       if (window.location.hash) {
         history.replaceState(null, '', window.location.pathname)
       }

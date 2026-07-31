@@ -18,7 +18,11 @@ function ScrollToTop() {
   const { pathname, hash } = useLocation()
   useEffect(() => {
     if (pathname === '/' && hash) return // Home handles its own scroll
-    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior })
+    const html = document.documentElement
+    const prev = html.style.scrollBehavior
+    html.style.scrollBehavior = 'auto'
+    window.scrollTo(0, 0)
+    html.style.scrollBehavior = prev
   }, [pathname, hash])
   return null
 }
