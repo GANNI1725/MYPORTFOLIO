@@ -54,6 +54,9 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
           <img
             src={project.image}
             alt={project.title}
+            width={project.imageWidth}
+            height={project.imageHeight}
+            loading="lazy"
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
             onError={(e) => {
               const target = e.target as HTMLImageElement

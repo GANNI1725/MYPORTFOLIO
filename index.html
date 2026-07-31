@@ -3,11 +3,22 @@
   <head>
     <script>
       history.scrollRestoration = 'manual';
-      window.addEventListener('pageshow', function () {
-        document.documentElement.style.scrollBehavior = 'auto';
-        window.scrollTo(0, 0);
-        document.documentElement.style.scrollBehavior = '';
-      });
+      (function () {
+        function scrollTop() {
+          if (window.location.hash) return;
+          var html = document.documentElement;
+          var prev = html.style.scrollBehavior;
+          html.style.scrollBehavior = 'auto';
+          window.scrollTo(0, 0);
+          html.style.scrollBehavior = prev;
+        }
+        scrollTop();
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', scrollTop);
+        }
+        window.addEventListener('load', scrollTop);
+        window.addEventListener('pageshow', scrollTop);
+      })();
     </script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LSQ02X3CN8"></script>

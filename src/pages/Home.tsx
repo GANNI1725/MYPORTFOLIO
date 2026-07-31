@@ -47,7 +47,7 @@ export default function Home() {
         description="Frontend Developer portfolio of Ganesh Prasad Bhandari — building modern, accessible web experiences with React, Next.js, and Tailwind CSS. Based in Nepal."
         path="/"
       />
-      <main className="grid-bg relative z-0">
+      <main className="grid-bg relative z-0 min-h-screen">
         {theme === 'red' && (
           <div
             className="fixed inset-0 overflow-hidden pointer-events-none"

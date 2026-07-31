@@ -117,6 +117,8 @@ export interface Project {
   category: string
   description: string
   image: string
+  imageWidth: number
+  imageHeight: number
   link?: string
   techStack?: string[]
 }
@@ -128,6 +130,8 @@ export const projects: Project[] = [
     category: 'Full Stack',
     description: 'A smart recommendation platform that suggests travel destinations and itineraries based on user preferences and historical data.',
     image: '/projects/travelbuddy.png',
+    imageWidth: 903,
+    imageHeight: 624,
     techStack: ['React', 'Node.js', 'MongoDB', 'Tailwind CSS'],
   },
   {
@@ -136,6 +140,8 @@ export const projects: Project[] = [
     category: 'Full Stack',
     description: 'A contactless ordering system with real-time menu updates and seamless customer ordering flow for restaurants.',
     image: '/projects/digital-menu.jpg',
+    imageWidth: 1280,
+    imageHeight: 831,
     techStack: ['Next.js', 'PostgreSQL', 'Prisma', 'Tailwind CSS'],
   },
   {
@@ -144,6 +150,8 @@ export const projects: Project[] = [
     category: 'Frontend',
     description: 'An e-commerce platform connecting local Nepali farmers directly to consumers with organic produce listings and cart management.',
     image: '/projects/hariyalibazar.png',
+    imageWidth: 1914,
+    imageHeight: 956,
     link: 'https://hariyali-bazar.vercel.app/',
     techStack: ['React', 'Firebase', 'Tailwind CSS', 'Vercel'],
   },

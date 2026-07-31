@@ -69,6 +69,8 @@ export default function About() {
                 <img
                   src={theme === 'red' ? '/Red%20mode%20my%20photo.png' : personalInfo.avatar}
                   alt={personalInfo.name}
+                  width={theme === 'red' ? 388 : 545}
+                  height={theme === 'red' ? 886 : 1600}
                   className="w-full h-full object-contain"
                   onError={() => setImgError(true)}
                 />
