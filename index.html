@@ -37,6 +37,24 @@
             });
           });
         });
+        var scrollGuardActive = true;
+        var scrollGuardStart = Date.now();
+        function scrollGuard() {
+          if (!scrollGuardActive) return;
+          if (Date.now() - scrollGuardStart > 1500) {
+            scrollGuardActive = false;
+            window.removeEventListener('scroll', scrollGuard);
+            return;
+          }
+          if (window.scrollY > 0) {
+            forceTop();
+          }
+        }
+        window.addEventListener('scroll', scrollGuard, { passive: true });
+        setTimeout(function () {
+          scrollGuardActive = false;
+          window.removeEventListener('scroll', scrollGuard);
+        }, 1500);
         setTimeout(function () {
           if (html.style.overflow === 'hidden') {
             unlockScroll();
