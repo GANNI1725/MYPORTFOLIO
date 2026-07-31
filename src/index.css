@@ -538,10 +538,16 @@ html.to-revert::view-transition-new(root) {
   position: absolute;
   top: 0;
   height: 100%;
-  width: 10%;
+  width: 34%;
   opacity: 0;
   filter: drop-shadow(0 0 6px rgba(255, 50, 40, 0.6)) drop-shadow(0 0 16px rgba(255, 30, 30, 0.35));
   animation: red-bolt-strike 0.9s steps(1, end) forwards;
+}
+
+@media (min-width: 768px) {
+  .red-bolt {
+    width: 10%;
+  }
 }
 
 .red-bolt-svg {

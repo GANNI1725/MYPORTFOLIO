@@ -21,8 +21,8 @@ const makeBolt = (seed: number): { path: string; branches: string[] } => {
   const points = 12 + Math.floor(rand() * 4)
   const seg = 100 / points
   for (let i = 1; i <= points; i++) {
-    x += (rand() - 0.5) * 90
-    x = Math.max(30, Math.min(170, x))
+    x += (rand() - 0.5) * 110
+    x = Math.max(15, Math.min(185, x))
     pts.push({ x, y: seg * i })
   }
 
@@ -72,7 +72,8 @@ export default function RedLightning() {
     const strike = () => {
       if (!alive) return
       const id = boltId++
-      setBolts(prev => [...prev.slice(-2), { id, left: 5 + Math.random() * 90, seed: Math.floor(Math.random() * 1e9) }])
+      const range = window.innerWidth < 768 ? 61 : 90
+      setBolts(prev => [...prev.slice(-2), { id, left: 5 + Math.random() * range, seed: Math.floor(Math.random() * 1e9) }])
       window.setTimeout(() => {
         if (alive) setBolts(prev => prev.filter(b => b.id !== id))
       }, 900)
