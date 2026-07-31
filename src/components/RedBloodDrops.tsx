@@ -66,7 +66,7 @@ export default function RedBloodDrops() {
 
     const drawDrop = (d: Drop) => {
       const len = d.size * 7
-      const slant = len * 0.18
+      const slant = len * (-d.vx / d.vy)
       const grad = ctx.createLinearGradient(d.x - slant, d.y - len, d.x, d.y)
       grad.addColorStop(0, `rgba(210,50,45,${0.25 * d.opacity})`)
       grad.addColorStop(0.7, `rgba(255,95,80,${0.7 * d.opacity})`)
@@ -132,8 +132,9 @@ export default function RedBloodDrops() {
           spawnAcc -= 0.008
           const size = 1.2 + Math.random() * 1.3
           const vy = 900 + Math.random() * 500
+          const drift = h * (0.12 + Math.random() * 0.1)
           drops.push({
-            x: 2 + Math.random() * (w - 4),
+            x: Math.random() * (w + drift),
             y: -20 - Math.random() * 40,
             vx: -vy * (0.12 + Math.random() * 0.1),
             vy,
