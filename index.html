@@ -21,27 +21,53 @@
           html.style.overflow = prevOverflow;
           if (document.body) document.body.style.overflow = '';
         }
+        // Hold the lock until BOTH React has mounted AND window.load has fired
+        // (whichever is later), so a deferred scroll-restore can't apply while
+        // resources are still settling. App.tsx signals React mount.
+        var reactMounted = false;
+        var pageLoaded = document.readyState === 'complete';
+        function tryUnlock() {
+          if (reactMounted && pageLoaded) {
+            forceTop();
+            unlockScroll();
+          }
+        }
+        window.__scrollFix = {
+          markReactMounted: function () {
+            reactMounted = true;
+            tryUnlock();
+          }
+        };
         lockScroll();
         forceTop();
         if (document.readyState === 'loading') {
           document.addEventListener('DOMContentLoaded', forceTop);
         }
-        window.addEventListener('load', forceTop);
+        window.addEventListener('load', function () {
+          pageLoaded = true;
+          tryUnlock();
+          forceTop();
+        });
         window.addEventListener('pagehide', lockScroll);
-        window.addEventListener('pageshow', function () {
+        window.addEventListener('pageshow', function (e) {
           forceTop();
           requestAnimationFrame(function () {
             requestAnimationFrame(function () {
               forceTop();
-              unlockScroll();
+              if (e.persisted) {
+                unlockScroll();
+              }
             });
           });
         });
+        // Scroll guard: catches any scroll-restore applied after the lock is
+        // released. Stays active until load fires + 800ms buffer (absolute 6s
+        // safety cap), then removes itself.
         var scrollGuardActive = true;
-        var scrollGuardStart = Date.now();
+        var scrollGuardExpiry = null;
         function scrollGuard() {
           if (!scrollGuardActive) return;
-          if (Date.now() - scrollGuardStart > 1500) {
+          if (scrollGuardExpiry !== null && Date.now() > scrollGuardExpiry) {
             scrollGuardActive = false;
             window.removeEventListener('scroll', scrollGuard);
             return;
@@ -51,10 +77,20 @@
           }
         }
         window.addEventListener('scroll', scrollGuard, { passive: true });
+        window.addEventListener('load', function () {
+          if (scrollGuardExpiry === null) {
+            scrollGuardExpiry = Date.now() + 800;
+            setTimeout(function () {
+              scrollGuardActive = false;
+              window.removeEventListener('scroll', scrollGuard);
+            }, 800);
+          }
+        });
         setTimeout(function () {
           scrollGuardActive = false;
           window.removeEventListener('scroll', scrollGuard);
-        }, 1500);
+        }, 6000);
+        // Safety: never leave the page locked if load/mount never settle.
         setTimeout(function () {
           if (html.style.overflow === 'hidden') {
             unlockScroll();

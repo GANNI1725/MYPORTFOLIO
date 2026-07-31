@@ -70,8 +70,8 @@ export default function App() {
     html.style.scrollBehavior = 'auto'
     window.scrollTo(0, 0)
     html.style.scrollBehavior = prev
-    html.style.overflow = ''
-    if (document.body) document.body.style.overflow = ''
+    const scrollFix = (window as unknown as { __scrollFix?: { markReactMounted: () => void } }).__scrollFix
+    scrollFix?.markReactMounted()
   }, [])
 
   return (
