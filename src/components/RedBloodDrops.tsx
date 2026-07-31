@@ -65,15 +65,17 @@ export default function RedBloodDrops() {
     window.addEventListener('resize', resize, { passive: true })
 
     const drawDrop = (d: Drop) => {
-      const len = d.size * 5
-      const tail = ctx.createLinearGradient(d.x, d.y - len, d.x, d.y)
-      tail.addColorStop(0, 'rgba(200,40,40,0)')
-      tail.addColorStop(1, `rgba(255,90,75,${0.9 * d.opacity})`)
-      ctx.strokeStyle = tail
+      const len = d.size * 7
+      const slant = len * 0.18
+      const grad = ctx.createLinearGradient(d.x - slant, d.y - len, d.x, d.y)
+      grad.addColorStop(0, `rgba(210,50,45,${0.25 * d.opacity})`)
+      grad.addColorStop(0.7, `rgba(255,95,80,${0.7 * d.opacity})`)
+      grad.addColorStop(1, `rgba(255,110,90,${0.95 * d.opacity})`)
+      ctx.strokeStyle = grad
       ctx.lineWidth = d.size
       ctx.lineCap = 'round'
       ctx.beginPath()
-      ctx.moveTo(d.x, d.y - len)
+      ctx.moveTo(d.x - slant, d.y - len)
       ctx.lineTo(d.x, d.y)
       ctx.stroke()
     }
@@ -129,11 +131,12 @@ export default function RedBloodDrops() {
         while (spawnAcc >= 0.008 && drops.length < 260) {
           spawnAcc -= 0.008
           const size = 1.2 + Math.random() * 1.3
+          const vy = 900 + Math.random() * 500
           drops.push({
             x: 2 + Math.random() * (w - 4),
             y: -20 - Math.random() * 40,
-            vx: (Math.random() - 0.5) * 40,
-            vy: 900 + Math.random() * 500,
+            vx: -vy * (0.12 + Math.random() * 0.1),
+            vy,
             size,
             landY: h,
             opacity: 0.5 + Math.random() * 0.35,
