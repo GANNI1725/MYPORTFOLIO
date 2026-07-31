@@ -13,7 +13,7 @@ export default function BackgroundMusic() {
   const darkSurface = theme !== 'light'
   const isRed = theme === 'red'
   const btnRef = useRef<HTMLButtonElement>(null)
-  const { register: registerMultiClick } = useMultiClick(3, 1800)
+  const { register: registerMultiClick } = useMultiClick(3, 900)
   const audioRef = useRef<HTMLAudioElement>(null)
   const [playing, setPlaying] = useState(false)
   const [preference, setPreference] = useState<Preference>(() => {
