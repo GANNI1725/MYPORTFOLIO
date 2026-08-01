@@ -80,7 +80,7 @@ export default function App() {
         <ScrollToTop />
         <ScrollProgress />
         <Navbar />
-        <Suspense fallback={null}>
+        <Suspense fallback={<div className="min-h-screen" />}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/privacy" element={<Privacy />} />
@@ -90,6 +90,8 @@ export default function App() {
             <Route path="/500" element={<ServerError />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+        </Suspense>
+        <Suspense fallback={null}>
           <RedModeLoader />
         </Suspense>
         <Footer />
