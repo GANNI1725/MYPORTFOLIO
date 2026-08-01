@@ -43,8 +43,8 @@ export default function Home() {
   return (
     <>
       <SEO
-        title="Frontend Developer Portfolio"
-        description="Frontend Developer portfolio of Ganesh Prasad Bhandari — building modern, accessible web experiences with React, Next.js, and Tailwind CSS. Based in Nepal."
+        title="Ganesh Prasad Bhandari — React & Next.js Frontend Developer in Nepal"
+        description="React & Next.js developer building fast, accessible web apps and interfaces. Based in Nepal — view projects, experience, and get in touch."
         path="/"
       />
       <main className="grid-bg relative z-0 min-h-screen">

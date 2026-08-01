@@ -13,7 +13,9 @@ const DEFAULT_IMAGE = '/hero.png'
 
 export default function SEO({ title, description, path, image = DEFAULT_IMAGE, type = 'website' }: SEOProps) {
   const url = `${SITE_URL}${path}`
-  const fullTitle = `${title} | Ganesh Prasad Bhandari`
+  const fullTitle = title.includes('Ganesh Prasad Bhandari')
+    ? title
+    : `${title} | Ganesh Prasad Bhandari`
 
   return (
     <Helmet>
