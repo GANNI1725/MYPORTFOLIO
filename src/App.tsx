@@ -4,6 +4,7 @@ import { ThemeProvider } from './theme/ThemeProvider'
 import Navbar from './components/Navbar'
 import Footer from './sections/Footer'
 import ErrorBoundary from './components/ErrorBoundary'
+import RedModeMusic from './components/RedModeMusic'
 import Home from './pages/Home'
 
 const RedModeLoader = lazy(() => import('./components/RedModeLoader'))
@@ -94,6 +95,7 @@ export default function App() {
         <Suspense fallback={null}>
           <RedModeLoader />
         </Suspense>
+        <RedModeMusic />
         <Footer />
       </ErrorBoundary>
     </ThemeProvider>

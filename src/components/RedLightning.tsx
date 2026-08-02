@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 
 interface Bolt {
@@ -63,6 +63,9 @@ const makeBolt = (seed: number): { path: string; branches: string[] } => {
 export default function RedLightning() {
   const reduced = useReducedMotion()
   const [bolts, setBolts] = useState<Bolt[]>([])
+  const [shaking, setShaking] = useState(false)
+  const shakeTimerRef = useRef<number | undefined>(undefined)
+  const veilTimerRef = useRef<number | undefined>(undefined)
 
   useEffect(() => {
     if (reduced) return
@@ -74,20 +77,30 @@ export default function RedLightning() {
       const id = boltId++
       const range = window.innerWidth < 768 ? 61 : 90
       setBolts(prev => [...prev.slice(-2), { id, left: 5 + Math.random() * range, seed: Math.floor(Math.random() * 1e9) }])
+      const root = document.documentElement
+      root.setAttribute('data-red-strike', '')
+      if (veilTimerRef.current) window.clearTimeout(veilTimerRef.current)
+      veilTimerRef.current = window.setTimeout(() => root.removeAttribute('data-red-strike'), 350)
       window.setTimeout(() => {
         if (alive) setBolts(prev => prev.filter(b => b.id !== id))
       }, 900)
+      if (shakeTimerRef.current) window.clearTimeout(shakeTimerRef.current)
+      setShaking(true)
+      shakeTimerRef.current = window.setTimeout(() => setShaking(false), 110)
     }
 
     const timer = window.setInterval(() => {
       if (!alive) return
       strike()
       if (Math.random() < 0.3) window.setTimeout(strike, 160)
-    }, 2800)
+    }, 1900)
 
-    const start = window.setTimeout(strike, 2800)
+    const start = window.setTimeout(strike, 1900)
     return () => {
       alive = false
+      if (shakeTimerRef.current) window.clearTimeout(shakeTimerRef.current)
+      if (veilTimerRef.current) window.clearTimeout(veilTimerRef.current)
+      document.documentElement.removeAttribute('data-red-strike')
       clearTimeout(start)
       clearInterval(timer)
     }
@@ -96,7 +109,7 @@ export default function RedLightning() {
   if (reduced) return null
 
   return (
-    <>
+    <div className={`red-strike-layer${shaking ? ' red-shaking' : ''}`}>
       {bolts.map((b) => {
         const { path, branches } = makeBolt(b.seed)
         return (
@@ -107,7 +120,7 @@ export default function RedLightning() {
                 fill="none"
                 className="red-bolt-halo"
                 stroke="#ff3026"
-                strokeWidth="5"
+                strokeWidth="8"
                 strokeLinejoin="round"
                 strokeLinecap="round"
               />
@@ -116,7 +129,7 @@ export default function RedLightning() {
                 fill="none"
                 className="red-bolt-core"
                 stroke="#ffd9d0"
-                strokeWidth="1.8"
+                strokeWidth="2.6"
                 strokeLinejoin="round"
                 strokeLinecap="round"
               />
@@ -125,7 +138,7 @@ export default function RedLightning() {
                 fill="none"
                 className="red-bolt-inner"
                 stroke="#ffffff"
-                strokeWidth="0.8"
+                strokeWidth="1.2"
                 strokeLinejoin="round"
                 strokeLinecap="round"
               />
@@ -136,7 +149,7 @@ export default function RedLightning() {
                   fill="none"
                   className="red-bolt-branch"
                   stroke="#ff5a4a"
-                  strokeWidth="1.1"
+                  strokeWidth="1.8"
                   strokeLinejoin="round"
                   strokeLinecap="round"
                 />
@@ -146,6 +159,6 @@ export default function RedLightning() {
         )
       })}
       {bolts.length > 0 && <div className="red-flash-full" key={bolts[bolts.length - 1].id} />}
-    </>
+    </div>
   )
 }

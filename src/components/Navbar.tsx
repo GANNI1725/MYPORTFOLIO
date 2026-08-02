@@ -51,7 +51,7 @@ export default function Navbar() {
   return (
     <>
       <div
-        className="fixed z-50"
+        className="red-reveal-navbar fixed z-50"
         style={{ top: '0.75rem', left: '1rem' }}
       >
         <a href="/#home" className="glass-pill inline-flex items-center px-4 py-2">
@@ -60,7 +60,7 @@ export default function Navbar() {
       </div>
 
       <div
-        className="fixed left-1/2 -translate-x-1/2 z-50 hidden lg:block"
+        className="red-reveal-navbar fixed left-1/2 -translate-x-1/2 z-50 hidden lg:block"
         style={{ top: pillTop, transition: 'top 0.35s cubic-bezier(0.16,1,0.3,1)' }}
       >
         <nav className={`glass-pill flex items-center ${pillGap} ${pillPad} ${pillShine}`}>
@@ -92,7 +92,7 @@ export default function Navbar() {
       </div>
 
       <div
-        className="fixed z-50"
+        className="red-reveal-navbar fixed z-50"
         style={{ top: pillTop, right: '1rem', transition: 'top 0.35s cubic-bezier(0.16,1,0.3,1)' }}
       >
         <div className={`glass-pill flex items-center ${pillGap} ${pillPad} ${pillShine}`}>

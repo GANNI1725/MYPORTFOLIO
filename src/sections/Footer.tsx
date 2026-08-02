@@ -76,7 +76,7 @@ export default function Footer() {
   return (
     <>
       <BackToTop />
-      <footer className="border-t border-[var(--border)] bg-[var(--bg)]/50 backdrop-blur-sm">
+      <footer className="red-reveal-footer border-t border-[var(--border)] bg-[var(--bg)]/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6 md:px-10 pt-16 pb-0">
           <motion.div
             initial="hidden"

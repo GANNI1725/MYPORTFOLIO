@@ -56,12 +56,17 @@ export default function Home() {
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
+              filter: 'saturate(0.85) contrast(0.92) brightness(0.96)',
               zIndex: -1,
             }}
           />
         )}
+        {theme === 'red' && <div className="red-grain" />}
+        {theme === 'red' && <div className="red-ambient" />}
+        {theme === 'red' && <div className="red-vignette" />}
+        {theme === 'red' && <div className="red-dark-veil" />}
         {theme === 'red' && (
-          <div className="fixed inset-0 overflow-hidden pointer-events-none z-40">
+          <div className="fixed inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 24 }}>
             <RedBloodDrops />
           </div>
         )}

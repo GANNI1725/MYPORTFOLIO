@@ -1,4 +1,4 @@
-import { useRef, useCallback, useState, useMemo } from 'react'
+import { useRef, useCallback, useState, useMemo, useEffect } from 'react'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
 import { ArrowDown } from 'lucide-react'
 import { personalInfo, stats } from '../data'
@@ -162,6 +162,20 @@ const nameChars = "Ganesh Prasad\nBhandari".split("")
 
 export default function Hero() {
   const reduced = useReducedMotion()
+  const { theme } = useTheme()
+  const [glitching, setGlitching] = useState(false)
+  const prevThemeRef = useRef(theme)
+
+  useEffect(() => {
+    const wasRed = prevThemeRef.current === 'red'
+    prevThemeRef.current = theme
+    if (theme === 'red' && !wasRed && !reduced) {
+      setGlitching(true)
+      const t = setTimeout(() => setGlitching(false), 300)
+      return () => clearTimeout(t)
+    }
+  }, [theme, reduced])
+
   const shuffleOrder = useMemo(() => {
     const order = Array.from({ length: nameChars.length }, (_, i) => i)
     for (let j = order.length - 1; j > 0; j--) {
@@ -194,7 +208,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-              className="name-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight text-left text-balance text-primary"
+              className={`name-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight text-left text-balance text-primary${glitching ? ' red-glitch-active' : ''}`}
               style={{
                 fontFamily: "'Alvera Demo', serif",
                 animation: reduced ? 'none' : 'name-glow 3.5s cubic-bezier(0.4,0,0.2,1) 0.8s infinite',
@@ -301,16 +315,52 @@ export default function Hero() {
         </div>
       </div>
 
-      <motion.div
-        className="absolute bottom-6 left-1/2 -translate-x-1/2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1, y: [0, 8, 0] }}
-        transition={{ opacity: { delay: 0.6, ease: [0.16, 1, 0.3, 1] }, y: { duration: 2, repeat: Infinity, ease: [0.4, 0, 0.2, 1] } }}
-      >
-        <div className="w-6 h-10 rounded-full border border-white/10 flex items-start justify-center p-1.5">
-          <div className="w-1 h-2 rounded-full bg-accent/60" />
-        </div>
-      </motion.div>
+      {theme === 'red' ? (
+        <motion.a
+          href="#about"
+          aria-label="Scroll to next section"
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[#FF2B2B]"
+          initial={{ opacity: 0 }}
+          animate={reduced ? { opacity: 1 } : { opacity: 1, y: [0, -5, 0], filter: ['drop-shadow(0 0 3px rgba(255,43,43,0.35))', 'drop-shadow(0 0 12px rgba(255,43,43,0.6))', 'drop-shadow(0 0 3px rgba(255,43,43,0.35))'] }}
+          transition={
+            reduced
+              ? { duration: 0.6, delay: 0.6, ease: [0.16, 1, 0.3, 1] }
+              : {
+                  opacity: { duration: 0.6, delay: 0.6, ease: [0.16, 1, 0.3, 1] },
+                  y: { duration: 2.5, ease: 'easeInOut', repeat: Infinity },
+                  filter: { duration: 2.5, ease: 'easeInOut', repeat: Infinity },
+                }
+          }
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="w-10 h-10"
+            aria-hidden="true"
+          >
+            <path d="M12 3a8 8 0 0 1 8 8c0 2.6-1.2 4.9-3 6.3V18.5A1.5 1.5 0 0 1 15.5 20h-7A1.5 1.5 0 0 1 7 18.5v-1.2C5.2 15.9 4 13.6 4 11a8 8 0 0 1 8-8z" />
+            <circle cx="9" cy="10.5" r="1.2" />
+            <circle cx="15" cy="10.5" r="1.2" />
+            <path d="M12 13v1.4" />
+            <path d="M9.5 17.5h5" />
+          </svg>
+        </motion.a>
+      ) : (
+        <motion.div
+          className="absolute bottom-6 left-1/2 -translate-x-1/2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, y: [0, 8, 0] }}
+          transition={{ opacity: { delay: 0.6, ease: [0.16, 1, 0.3, 1] }, y: { duration: 2, repeat: Infinity, ease: [0.4, 0, 0.2, 1] } }}
+        >
+          <div className="w-6 h-10 rounded-full border border-white/10 flex items-start justify-center p-1.5">
+            <div className="w-1 h-2 rounded-full bg-accent/60" />
+          </div>
+        </motion.div>
+      )}
     </section>
   )
 }

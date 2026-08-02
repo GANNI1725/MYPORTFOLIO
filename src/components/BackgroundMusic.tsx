@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Music } from 'lucide-react'
-import SkullIcon from './SkullIcon'
+import OccultToggleIcon from './OccultToggleIcon'
 import { useTheme } from '../theme/useTheme'
 import { useMultiClick } from '../hooks/useMultiClick'
 
@@ -15,6 +15,8 @@ export default function BackgroundMusic() {
   const btnRef = useRef<HTMLButtonElement>(null)
   const { register: registerMultiClick } = useMultiClick(3, 900)
   const audioRef = useRef<HTMLAudioElement>(null)
+  const wasPlayingBeforeRedRef = useRef(false)
+  const prevThemeRef = useRef(theme)
   const [playing, setPlaying] = useState(false)
   const [preference, setPreference] = useState<Preference>(() => {
     try {
@@ -67,6 +69,22 @@ export default function BackgroundMusic() {
   }, [preference])
 
   useEffect(() => {
+    const audio = audioRef.current
+    if (!audio) return
+    const wasRed = prevThemeRef.current === 'red'
+    prevThemeRef.current = theme
+    if (theme === 'red' && !wasRed) {
+      wasPlayingBeforeRedRef.current = !audio.paused
+      audio.pause()
+    } else if (theme !== 'red' && wasRed) {
+      if (wasPlayingBeforeRedRef.current) {
+        audio.play().catch(() => setPlaying(false))
+      }
+      wasPlayingBeforeRedRef.current = false
+    }
+  }, [theme])
+
+  useEffect(() => {
     window.dispatchEvent(new CustomEvent('music-state-change', { detail: { playing } }))
   }, [playing, theme])
 
@@ -82,24 +100,31 @@ export default function BackgroundMusic() {
       setPreference('off')
       try { localStorage.setItem(STORAGE_KEY, 'false') } catch {}
       audio.pause()
-      if (theme === 'red') {
-        const rect = btnRef.current?.getBoundingClientRect()
-        const x = rect ? ((rect.left + rect.width / 2) / window.innerWidth) * 100 : 50
-        const y = rect ? ((rect.top + rect.height / 2) / window.innerHeight) * 100 : 50
-        toggleRedMode({ x, y })
-      }
     }
-  }, [theme, toggleRedMode])
+  }, [])
 
   const handleClick = useCallback(() => {
-    toggle()
-    registerMultiClick(() => {
+    const fireRedToggle = () => {
       const rect = btnRef.current?.getBoundingClientRect()
       const x = rect ? ((rect.left + rect.width / 2) / window.innerWidth) * 100 : 50
       const y = rect ? ((rect.top + rect.height / 2) / window.innerHeight) * 100 : 50
       toggleRedMode({ x, y })
+    }
+
+    let redFired = false
+    registerMultiClick(() => {
+      redFired = true
+      fireRedToggle()
     })
-  }, [toggle, registerMultiClick, toggleRedMode])
+    if (redFired) return
+
+    if (isRed) {
+      fireRedToggle()
+      return
+    }
+
+    toggle()
+  }, [isRed, toggle, registerMultiClick, toggleRedMode])
 
   return (
     <>
@@ -188,17 +213,17 @@ export default function BackgroundMusic() {
 
         <span className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
           <motion.span
-            className="relative flex items-center justify-center"
+            className="relative flex items-center justify-center text-secondary"
             animate={playing && !isRed ? { rotate: 360 } : { rotate: 0 }}
             transition={playing && !isRed ? { duration: 2, repeat: Infinity, ease: 'linear' } : { duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           >
             {isRed ? (
-              <SkullIcon size={26} />
+              <OccultToggleIcon size={48} />
             ) : (
               <Music size={14} className={playing ? 'text-accent' : 'text-secondary'} />
             )}
             <AnimatePresence>
-              {!playing && (
+              {!playing && !isRed && (
                 <motion.span
                   className="absolute inset-0 flex items-center justify-center pointer-events-none"
                   initial={{ opacity: 0, scaleX: 0 }}
