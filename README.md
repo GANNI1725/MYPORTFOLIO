@@ -1,32 +1,44 @@
-# React + TypeScript + Vite
+# Ganesh Prasad Bhandari — Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A premium, interactive portfolio website built with **React 19**, **TypeScript**, **Vite**, **Tailwind CSS v4**, and **Framer Motion**.
 
-Currently, two official plugins are available:
+Live site: https://ganeshpsdbhandari.com.np
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- Light / dark / red (easter egg) themes with animated view transitions
+- Red mode: ambient audio, lightning strikes, blood rain, loader sting, cursed tab title
+- Scroll-triggered reveals, magnetic hover effects, tilt cards, animated skill rings
+- Background music player with persistent preference
+- Contact form powered by EmailJS
+- SEO meta tags, Open Graph, JSON-LD structured data, sitemap
+- Reduced-motion support and accessible UI
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Getting started
 
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Scripts
+
+- `npm run dev` — start Vite dev server
+- `npm run build` — type-check and build for production
+- `npm run preview` — preview the production build
+- `npm run lint` — run Oxlint
+
+## Environment variables
+
+The contact form uses EmailJS. Create a `.env.local` file (gitignored):
+
+```env
+VITE_EMAILJS_SERVICE_ID=...
+VITE_EMAILJS_TEMPLATE_ID=...
+VITE_EMAILJS_PUBLIC_KEY=...
+```
+
+## Deployment
+
+Deploy the `dist/` output produced by `npm run build`. The repo includes
+`public/_headers` with cache-control rules for Netlify-style static hosting.

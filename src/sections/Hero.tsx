@@ -288,6 +288,7 @@ export default function Hero() {
                 <div className="group/btn relative">
                   <a
                     href={personalInfo.resumeUrl}
+                    download
                     className="relative h-11 px-6 inline-flex items-center justify-center gap-2 rounded-full border border-white/10 dark:border-white/5 text-sm font-semibold text-primary transition-all duration-300 hover:scale-105 active:scale-[0.97] hover:bg-white/[0.08] dark:hover:bg-white/[0.08] hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5"
                   >
                     <svg

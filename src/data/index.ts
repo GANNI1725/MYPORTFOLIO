@@ -5,7 +5,7 @@ export const personalInfo = {
   email: 'bhandariganesh1725@gmail.com',
   phone: '+977 9848958471',
   location: 'Tilottama-6, Manigram, Rupandehi, Nepal',
-  resumeUrl: '#',
+  resumeUrl: '/Ganesh_Prasad_Bhandari_CV.pdf',
   avatar: '/hero.png',
   social: {
     github: 'https://github.com/GANNI1725',

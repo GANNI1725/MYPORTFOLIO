@@ -539,15 +539,6 @@ html.to-revert::view-transition-new(root) {
   95% { opacity: 1; }
 }
 
-@keyframes skull-icon-glow {
-  0%, 100% { filter: drop-shadow(0 0 4px rgba(255, 60, 50, 0.45)); }
-  50% { filter: drop-shadow(0 0 10px rgba(255, 90, 60, 0.95)); }
-}
-
-.skull-icon {
-  animation: skull-icon-glow 2.4s ease-in-out infinite;
-}
-
 .red-drops-canvas {
   position: absolute;
   inset: 0;
