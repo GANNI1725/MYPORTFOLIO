@@ -52,9 +52,9 @@ export default function Navbar() {
     <>
       <div
         className="red-reveal-navbar fixed z-50"
-        style={{ top: '0.75rem', left: '1rem' }}
+        style={{ top: pillTop, left: '1rem', transition: 'top 0.35s cubic-bezier(0.16,1,0.3,1)' }}
       >
-        <a href="/#home" className="glass-pill inline-flex items-center px-4 py-2">
+        <a href="/#home" className={`glass-pill inline-flex items-center ${pillPad} ${pillShine}`}>
           <Logo />
         </a>
       </div>
@@ -107,7 +107,7 @@ export default function Navbar() {
           </a>
           <button
             onClick={() => setIsMobileOpen(!isMobileOpen)}
-            className="lg:hidden w-11 h-11 rounded-full flex items-center justify-center text-secondary hover:text-primary transition-colors duration-200"
+            className="lg:hidden w-8 h-8 rounded-full flex items-center justify-center text-secondary hover:text-primary transition-colors duration-200"
             aria-label="Toggle menu"
           >
             {isMobileOpen ? <X size={16} /> : <Menu size={16} />}

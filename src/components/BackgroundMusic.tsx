@@ -138,7 +138,7 @@ export default function BackgroundMusic() {
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.95 }}
         aria-label={playing ? 'Pause background music' : 'Play background music'}
-        className={`relative rounded-full outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)] flex items-center justify-center w-11 h-11`}
+        className={`relative rounded-full outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)] flex items-center justify-center w-8 h-8`}
         style={{ perspective: 500 }}
       >
         {isRed ? (
@@ -218,7 +218,7 @@ export default function BackgroundMusic() {
             transition={playing && !isRed ? { duration: 2, repeat: Infinity, ease: 'linear' } : { duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           >
             {isRed ? (
-              <OccultToggleIcon size={48} />
+              <OccultToggleIcon size={32} />
             ) : (
               <Music size={14} className={playing ? 'text-accent' : 'text-secondary'} />
             )}
