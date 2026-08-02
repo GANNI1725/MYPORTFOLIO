@@ -6,8 +6,7 @@ Live site: https://ganeshpsdbhandari.com.np
 
 ## Features
 
-- Light / dark / red (easter egg) themes with animated view transitions
-- Red mode: ambient audio, lightning strikes, blood rain, loader sting, cursed tab title
+- Light / dark themes with animated view transitions
 - Scroll-triggered reveals, magnetic hover effects, tilt cards, animated skill rings
 - Background music player with persistent preference
 - Contact form powered by EmailJS
