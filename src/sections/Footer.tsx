@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'motion/react'
 import { ArrowUp, Mail } from 'lucide-react'
 import { personalInfo } from '../data'
 
@@ -48,7 +48,7 @@ function BackToTop() {
           exit={{ opacity: 0, scale: 0.5 }}
           transition={{ type: 'spring', stiffness: 300, damping: 25 }}
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="fixed bottom-6 right-6 z-50 w-11 h-11 rounded-full bg-accent text-white flex items-center justify-center shadow-lg shadow-accent/25 hover:bg-accent-hover hover:shadow-xl hover:shadow-accent/30 hover:ring-2 hover:ring-accent/30 transition-[background-color,box-shadow,transform] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-110 active:scale-95"
+          className="fixed bottom-6 right-6 z-50 w-11 h-11 rounded-full bg-accent-cta text-white flex items-center justify-center shadow-lg shadow-accent/25 hover:brightness-110 hover:shadow-xl hover:shadow-accent/30 hover:ring-2 hover:ring-accent/30 transition-[filter,box-shadow,transform] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-110 active:scale-95"
           aria-label="Back to top"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
@@ -69,7 +69,7 @@ export default function Footer() {
   return (
     <>
       <BackToTop />
-      <footer className="red-reveal-footer border-t border-[var(--border)] bg-[var(--bg)]/50 backdrop-blur-sm">
+      <footer className="red-reveal-footer border-t border-border bg-canvas/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6 md:px-10 pt-16 pb-0">
           <motion.div
             initial="hidden"
@@ -84,7 +84,7 @@ export default function Footer() {
                 <img src="/logo.png" alt="GPB" width="63" height="28" className="footer-logo h-7 w-auto opacity-80" />
                 <span className="text-sm font-semibold text-primary">Ganesh Prasad Bhandari</span>
               </div>
-              <p className="text-xs text-secondary/60 leading-relaxed max-w-xs text-center md:text-left">
+              <p className="text-xs text-secondary/70 leading-relaxed max-w-xs text-center md:text-left">
                 Frontend developer building modern, accessible web experiences.
               </p>
               <div className="flex gap-2.5">
@@ -94,7 +94,7 @@ export default function Footer() {
                     href={s.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-full bg-white/[0.06] dark:bg-white/[0.04] border border-[var(--border)] flex items-center justify-center text-secondary/70 transition-[color,border-color,background-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-110 active:scale-95"
+                    className="w-10 h-10 rounded-full bg-secondary/5 border border-border flex items-center justify-center text-secondary transition-[color,border-color,background-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-110 active:scale-95"
                     style={{ '--sc': s.color, '--sg': s.glow } as React.CSSProperties}
                     aria-label={s.label}
                     onMouseEnter={(e) => {
@@ -123,28 +123,28 @@ export default function Footer() {
 
             {/* Column 2 — Navigate */}
             <motion.div variants={fadeUp} className="md:col-span-3 flex flex-col items-center md:items-start gap-4">
-              <p className="text-[11px] font-semibold tracking-[0.15em] uppercase text-secondary/40">Navigate</p>
+              <p className="font-mono text-2xs font-semibold tracking-meta uppercase text-secondary/60">Navigate</p>
               <div className="flex flex-col items-center md:items-start gap-2.5">
-                <Link to="/" className="text-sm text-secondary/70 hover:text-accent transition-colors">Home</Link>
-                <Link to="/about-us" className="text-sm text-secondary/70 hover:text-accent transition-colors">About</Link>
-                <Link to="/contact-us" className="text-sm text-secondary/70 hover:text-accent transition-colors">Contact</Link>
-                <Link to="/privacy" className="text-sm text-secondary/70 hover:text-accent transition-colors">Privacy Policy</Link>
-                <Link to="/terms" className="text-sm text-secondary/70 hover:text-accent transition-colors">Terms &amp; Conditions</Link>
+                <Link to="/" className="text-sm text-secondary/80 hover:text-accent transition-colors">Home</Link>
+                <Link to="/about-us" className="text-sm text-secondary/80 hover:text-accent transition-colors">About</Link>
+                <Link to="/contact-us" className="text-sm text-secondary/80 hover:text-accent transition-colors">Contact</Link>
+                <Link to="/privacy" className="text-sm text-secondary/80 hover:text-accent transition-colors">Privacy Policy</Link>
+                <Link to="/terms" className="text-sm text-secondary/80 hover:text-accent transition-colors">Terms &amp; Conditions</Link>
               </div>
             </motion.div>
 
             {/* Column 3 — Contact */}
             <motion.div variants={fadeUp} className="md:col-span-4 flex flex-col items-center md:items-start gap-4">
-              <p className="text-[11px] font-semibold tracking-[0.15em] uppercase text-secondary/40">Contact</p>
+              <p className="font-mono text-2xs font-semibold tracking-meta uppercase text-secondary/60">Contact</p>
               <div className="flex flex-col items-center md:items-start gap-3">
                 <a
                   href={`mailto:${personalInfo.email}`}
-                  className="flex items-center gap-2.5 text-sm text-secondary/70 hover:text-accent transition-colors group"
+                  className="flex items-center gap-2.5 text-sm text-secondary/80 hover:text-accent transition-colors group"
                 >
-                  <Mail size={14} className="shrink-0 text-secondary/40 group-hover:text-accent transition-colors" />
+                  <Mail size={14} className="shrink-0 text-secondary/60 group-hover:text-accent transition-colors" />
                   {personalInfo.email}
                 </a>
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-semibold tracking-wide">
+                <span className="font-mono inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-3xs font-semibold tracking-wide">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   Open to work
                 </span>
@@ -154,12 +154,12 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-14 border-t border-[var(--border)]">
+        <div className="mt-14 border-t border-border">
           <div className="max-w-7xl mx-auto px-6 md:px-10 py-5 flex flex-col md:flex-row items-center md:justify-between gap-3">
-            <p className="text-[11px] text-secondary/40">
+            <p className="text-2xs text-secondary/60">
               &copy; {new Date().getFullYear()} {personalInfo.name}. All rights reserved.
             </p>
-            <p className="text-[10px] text-secondary/30 tracking-wide">
+            <p className="font-mono text-3xs text-secondary/50 tracking-wide">
               Built with React, Vite, Tailwind CSS &amp; Framer Motion
             </p>
           </div>

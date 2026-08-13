@@ -1,5 +1,5 @@
 import { useCallback, useRef } from 'react'
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import { Sun, Moon } from 'lucide-react'
 import { useTheme } from '../theme/useTheme'
 import { runThemeTransition } from '../lib/themeTransition'
@@ -23,7 +23,7 @@ export default function ThemeToggle() {
       whileHover={{ scale: 1.08 }}
       whileTap={{ scale: 0.95 }}
       aria-label="Switch between dark and light mode"
-      className="relative w-8 h-8 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)] flex items-center justify-center"
+      className="relative w-8 h-8 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas flex items-center justify-center"
     >
       <motion.div
         className="absolute inset-0 rounded-full"

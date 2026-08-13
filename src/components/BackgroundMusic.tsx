@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'motion/react'
 import { Music } from 'lucide-react'
 import OccultToggleIcon from './OccultToggleIcon'
 import { useTheme } from '../theme/useTheme'
@@ -138,7 +138,7 @@ export default function BackgroundMusic() {
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.95 }}
         aria-label={playing ? 'Pause background music' : 'Play background music'}
-        className={`relative rounded-full outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)] flex items-center justify-center w-8 h-8`}
+        className={`relative rounded-full outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas flex items-center justify-center w-8 h-8`}
         style={{ perspective: 500 }}
       >
         {isRed ? (

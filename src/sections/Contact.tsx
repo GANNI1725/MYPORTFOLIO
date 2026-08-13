@@ -1,16 +1,12 @@
 import { useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import { Mail, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react'
 import emailjs from '@emailjs/browser'
 import SectionHeading from '../components/SectionHeading'
 import { personalInfo } from '../data'
+import { staggerContainer, staggerItem, revealTransition } from '../lib/motion'
 
-const staggerItem = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { ease: [0.16, 1, 0.3, 1] as const } },
-}
-
-const inputClass = 'w-full px-4 py-3 rounded-xl bg-white/5 dark:bg-white/5 border border-[var(--border)] text-primary text-sm focus:outline-none focus:border-accent focus:ring-[3px] focus:ring-accent/20 focus:bg-accent/[0.02] focus:shadow-xl focus:shadow-accent/10 transition-[border-color,box-shadow,background-color] duration-200'
+const inputClass = 'w-full px-4 py-3 rounded-xl bg-surface/60 border border-border text-primary text-sm focus:outline-none focus:border-accent focus:ring-[3px] focus:ring-accent/20 focus:bg-accent/5 focus:shadow-xl focus:shadow-accent/10 transition-[border-color,box-shadow,background-color] duration-200'
 
 export default function Contact() {
   const formRef = useRef<HTMLFormElement>(null)
@@ -57,7 +53,14 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="py-24 md:py-32 px-6 md:px-10">
+    <motion.section
+      id="contact"
+      className="py-20 md:py-28 px-6 md:px-10"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={revealTransition}
+    >
       <div className="max-w-4xl mx-auto">
         <SectionHeading
           label="Contact"
@@ -85,7 +88,7 @@ export default function Contact() {
                 <Mail size={18} />
               </div>
               <div>
-                <p className="text-xs font-bold uppercase tracking-widest text-secondary">Email</p>
+                <p className="font-mono text-xs font-bold uppercase tracking-widest text-secondary">Email</p>
                 <p className="text-sm font-semibold text-primary">{personalInfo.email}</p>
               </div>
             </a>
@@ -99,7 +102,7 @@ export default function Contact() {
                 <MapPin size={18} />
               </div>
               <div>
-                <p className="text-xs font-bold uppercase tracking-widest text-secondary">Location</p>
+                <p className="font-mono text-xs font-bold uppercase tracking-widest text-secondary">Location</p>
                 <p className="text-sm font-semibold text-primary">{personalInfo.location}</p>
               </div>
             </a>
@@ -118,40 +121,40 @@ export default function Contact() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              variants={{ visible: { transition: { staggerChildren: 0.06 } } }}
+              variants={staggerContainer}
               className="space-y-4"
             >
               <motion.div variants={staggerItem} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <label className="flex flex-col gap-1">
-                  <span className="text-xs font-semibold text-secondary px-1">Full Name</span>
+                  <span className="font-mono text-xs font-semibold uppercase tracking-wider text-secondary px-1">Full Name</span>
                   <input type="text" name="user_name" required placeholder="John Doe" autoComplete="name" className={inputClass} />
                 </label>
                 <label className="flex flex-col gap-1">
-                  <span className="text-xs font-semibold text-secondary px-1">Email Address</span>
+                  <span className="font-mono text-xs font-semibold uppercase tracking-wider text-secondary px-1">Email Address</span>
                   <input type="email" name="user_email" required placeholder="john@example.com" autoComplete="email" className={inputClass} />
                 </label>
               </motion.div>
               <motion.div variants={staggerItem}>
                 <label className="flex flex-col gap-1">
-                  <span className="text-xs font-semibold text-secondary px-1">Phone Number</span>
+                  <span className="font-mono text-xs font-semibold uppercase tracking-wider text-secondary px-1">Phone Number</span>
                   <input type="tel" name="user_phone" placeholder="+977 98XXXXXXXX" autoComplete="tel" pattern="[+]?[0-9\s\-\(\)]{7,20}" title="Enter a valid phone number (7-20 digits)" className={inputClass} />
                 </label>
               </motion.div>
               <motion.div variants={staggerItem}>
                 <label className="flex flex-col gap-1">
-                  <span className="text-xs font-semibold text-secondary px-1">Service of Interest</span>
+                  <span className="font-mono text-xs font-semibold uppercase tracking-wider text-secondary px-1">Service of Interest</span>
                   <input type="text" name="service" placeholder="e.g. Web Development" className={inputClass} />
                 </label>
               </motion.div>
               <motion.div variants={staggerItem}>
                 <label className="flex flex-col gap-1">
-                  <span className="text-xs font-semibold text-secondary px-1">Timeline</span>
+                  <span className="font-mono text-xs font-semibold uppercase tracking-wider text-secondary px-1">Timeline</span>
                   <input type="text" name="timeline" placeholder="e.g. 2-3 weeks" className={inputClass} />
                 </label>
               </motion.div>
               <motion.div variants={staggerItem}>
                 <label className="flex flex-col gap-1">
-                  <span className="text-xs font-semibold text-secondary px-1">Project Details</span>
+                  <span className="font-mono text-xs font-semibold uppercase tracking-wider text-secondary px-1">Project Details</span>
                   <textarea name="message" required rows={4} placeholder="Describe your project..." className={`${inputClass} resize-none`} />
                 </label>
               </motion.div>
@@ -169,7 +172,7 @@ export default function Contact() {
                       ? 'bg-accent/20 text-accent'
                       : status === 'error'
                       ? 'bg-red-900/20 text-red-400'
-                      : 'bg-accent text-white shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/40'
+                      : 'bg-accent-cta text-white shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/40'
                   }`}
                 >
                   {status === 'idle' && (
@@ -190,6 +193,6 @@ export default function Contact() {
           </motion.div>
         </div>
       </div>
-    </section>
+    </motion.section>
   )
 }

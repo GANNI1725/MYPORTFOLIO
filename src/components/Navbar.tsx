@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'motion/react'
 import Logo from './Logo'
 import ThemeToggle from './ThemeToggle'
 import BackgroundMusic from './BackgroundMusic'
@@ -63,18 +63,20 @@ export default function Navbar() {
 
   return (
     <>
-      <div
+      <motion.div
+        layout
         className="red-reveal-navbar fixed z-50"
-        style={{ top: pillTop, left: '1rem', transition: 'top 0.35s cubic-bezier(0.16,1,0.3,1)' }}
+        style={{ top: pillTop, left: '1rem' }}
       >
         <a href="/#home" className={`glass-pill inline-flex items-center ${pillPad} ${pillShine}`}>
           <Logo />
         </a>
-      </div>
+      </motion.div>
 
-      <div
-        className="red-reveal-navbar fixed left-1/2 -translate-x-1/2 z-50 hidden lg:block"
-        style={{ top: pillTop, transition: 'top 0.35s cubic-bezier(0.16,1,0.3,1)' }}
+      <motion.div
+        layout
+        className="red-reveal-navbar fixed left-0 right-0 mx-auto w-fit z-50 hidden lg:block"
+        style={{ top: pillTop }}
       >
         <nav className={`glass-pill flex items-center ${pillGap} ${pillPad} ${pillShine}`}>
           {navItems.map((item) => {
@@ -85,10 +87,10 @@ export default function Navbar() {
                 key={item.name}
                 href={item.href}
                 onClick={() => handleNavClick(item.href)}
-                className={`relative px-3 py-1.5 text-sm font-medium transition-colors duration-200 rounded-full whitespace-nowrap ${
+                className={`relative font-mono px-3 py-1.5 text-sm font-medium transition-colors duration-200 rounded-full whitespace-nowrap ${
                   isActive
                     ? 'text-accent'
-                    : 'text-secondary/70 hover:text-primary hover:bg-accent/5'
+                    : 'text-secondary hover:text-primary hover:bg-accent/5'
                 }`}
               >
                 {isActive && (
@@ -103,31 +105,32 @@ export default function Navbar() {
             )
           })}
         </nav>
-      </div>
+      </motion.div>
 
-      <div
+      <motion.div
+        layout
         className="red-reveal-navbar fixed z-50"
-        style={{ top: pillTop, right: '1rem', transition: 'top 0.35s cubic-bezier(0.16,1,0.3,1)' }}
+        style={{ top: pillTop, right: '1rem' }}
       >
         <div className={`glass-pill flex items-center ${pillGap} ${pillPad} ${pillShine}`}>
           <ThemeToggle />
-          <div className="w-px h-5 bg-[var(--border)]" />
+          <div className="w-px h-5 bg-border" />
           <BackgroundMusic />
           <a
             href="/#contact"
-            className="hidden lg:inline-flex h-8 px-4 items-center justify-center rounded-full bg-accent text-white text-sm font-semibold transition-[transform,box-shadow] duration-300 hover:scale-105 active:scale-[0.97] shadow-lg shadow-accent/25"
+            className="hidden lg:inline-flex h-8 px-4 items-center justify-center rounded-full bg-accent-cta text-white text-sm font-semibold transition-[transform,box-shadow] duration-300 hover:scale-105 active:scale-[0.97] shadow-lg shadow-accent/25"
           >
             Hire Me
           </a>
           <button
             onClick={() => setIsMobileOpen(!isMobileOpen)}
-            className="lg:hidden w-8 h-8 rounded-full flex items-center justify-center text-secondary hover:text-primary transition-colors duration-200"
+            className="lg:hidden w-9 h-9 rounded-full flex items-center justify-center text-secondary hover:text-primary hover:bg-secondary/10 transition-colors duration-200"
             aria-label="Toggle menu"
           >
             {isMobileOpen ? <X size={16} /> : <Menu size={16} />}
           </button>
         </div>
-      </div>
+      </motion.div>
 
       <AnimatePresence>
         {isMobileOpen && (
@@ -136,7 +139,7 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-[var(--bg)]/80 backdrop-blur-xl flex flex-col items-center justify-center gap-6"
+            className="fixed inset-0 z-40 bg-canvas/80 backdrop-blur-xl flex flex-col items-center justify-center gap-6"
           >
             {navItems.map((item, i) => (
               <motion.a
@@ -157,7 +160,7 @@ export default function Navbar() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: navItems.length * 0.06 + 0.1 }}
-              className="mt-4 h-11 px-8 flex items-center justify-center rounded-full bg-accent text-white font-semibold text-sm shadow-lg shadow-accent/25 transition-all"
+              className="mt-4 h-11 px-8 flex items-center justify-center rounded-full bg-accent-cta text-white font-semibold text-sm shadow-lg shadow-accent/25 transition-all"
             >
               Hire Me
             </motion.a>

@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import SEO from '../components/SEO'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 
@@ -68,7 +68,7 @@ export default function Terms() {
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="mb-12"
           >
-            <p className="text-xs font-semibold tracking-[0.2em] uppercase text-accent mb-3">Legal</p>
+            <p className="font-mono code-label text-2xs font-medium tracking-eyebrow uppercase text-accent mb-3">Legal</p>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-primary leading-tight">
               Terms & <span className="text-accent">Conditions</span>
             </h1>

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'motion/react'
 import { useTheme } from '../theme/useTheme'
 
 const OVERLAY_CLOSED_EVENT = 'red-mode-overlay-closed'

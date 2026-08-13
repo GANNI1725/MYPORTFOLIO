@@ -1,5 +1,5 @@
 import { useRef, useCallback } from 'react'
-import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { motion, useMotionValue, useSpring } from 'motion/react'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 
 export default function MagneticWrap({ children, className }: { children: React.ReactNode; className?: string }) {

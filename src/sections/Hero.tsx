@@ -1,7 +1,8 @@
 import { useRef, useCallback, useState, useMemo, useEffect } from 'react'
-import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { motion, useMotionValue, useSpring } from 'motion/react'
 import { ArrowDown } from 'lucide-react'
 import { personalInfo, stats } from '../data'
+import { revealTransition } from '../lib/motion'
 import StatsCard from '../components/StatsCard'
 import SocialLinks from '../components/SocialLinks'
 import MagneticWrap from '../components/MagneticWrap'
@@ -117,7 +118,7 @@ function PortraitSection() {
               style={reduced ? undefined : { rotateX: tiltRotateX, rotateY: tiltRotateY }}
             >
               {imgError ? (
-                <div className="w-full aspect-[3/4] bg-gradient-to-br from-accent/20 to-purple-500/20 flex items-center justify-center rounded-2xl">
+                <div className="w-full aspect-[3/4] bg-gradient-to-br from-accent/20 to-accent-hover/20 flex items-center justify-center rounded-2xl">
                   <div className="w-24 h-24 rounded-2xl bg-accent/10 flex items-center justify-center text-accent">
                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -181,7 +182,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center pt-28 pb-16 md:pb-24 overflow-hidden"
+      className="relative min-h-screen flex items-center pt-28 pb-16 md:pb-24 overflow-hidden bg-dots"
     >
       <div className="absolute inset-0 bg-gradient-to-b from-accent/5 via-transparent to-transparent pointer-events-none" />
 
@@ -191,8 +192,8 @@ export default function Hero() {
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="text-xs font-semibold tracking-[0.2em] uppercase text-secondary"
+              transition={revealTransition}
+              className="font-mono code-label text-3xs font-medium tracking-eyebrow uppercase text-accent"
             >
               Hi I Am
             </motion.p>
@@ -200,10 +201,9 @@ export default function Hero() {
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ ...revealTransition, delay: 0.05 }}
               className={`name-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight text-left text-balance text-primary${glitching ? ' red-glitch-active' : ''}`}
               style={{
-                fontFamily: "'Alvera Demo', serif",
                 animation: reduced ? 'none' : 'name-glow 3.5s cubic-bezier(0.4,0,0.2,1) 0.8s infinite',
               }}
             >
@@ -218,7 +218,7 @@ export default function Hero() {
                       <motion.span
                         key={i}
                         className="inline-block"
-                        initial={{ opacity: 0, y: 80, scale: 0.2, rotate: -20, color: '#60A5FA', filter: 'blur(8px)' }}
+                        initial={{ opacity: 0, y: 80, scale: 0.2, rotate: -20, color: 'var(--color-accent)', filter: 'blur(8px)' }}
                         animate={{ opacity: 1, y: 0, scale: 1, rotate: 0, color: 'var(--primary)', filter: 'blur(0px)' }}
                         transition={{
                           type: 'spring',
@@ -243,7 +243,7 @@ export default function Hero() {
             <motion.h2
               initial={{ opacity: 0, y: 20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.35, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ ...revealTransition, delay: 0.8 }}
               className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-accent leading-tight"
             >
               Frontend Developer
@@ -252,7 +252,7 @@ export default function Hero() {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 1.0, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ ...revealTransition, delay: 1.0 }}
               className="text-base md:text-lg text-secondary max-w-lg leading-relaxed"
             >
               {personalInfo.tagline}
@@ -263,14 +263,14 @@ export default function Hero() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 2.0, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ ...revealTransition, delay: 2.0 }}
               className="flex flex-wrap gap-3"
             >
               <MagneticWrap>
                 <div className="group/btn relative">
                   <a
                     href="#contact"
-                    className="relative h-11 px-6 inline-flex items-center justify-center gap-2 rounded-full bg-accent text-white text-sm font-semibold transition-all duration-300 hover:scale-105 active:scale-[0.97] shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/40"
+                    className="relative h-11 px-6 inline-flex items-center justify-center gap-2 rounded-full bg-accent-cta text-white text-sm font-semibold transition-all duration-300 hover:scale-105 active:scale-[0.97] shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/40"
                   >
                     Hire Me
                     <ArrowDown size={14} className="transition-transform duration-300 group-hover/btn:translate-y-0.5" />
@@ -282,7 +282,7 @@ export default function Hero() {
                   <a
                     href={personalInfo.resumeUrl}
                     download
-                    className="relative h-11 px-6 inline-flex items-center justify-center gap-2 rounded-full border border-white/10 dark:border-white/5 text-sm font-semibold text-primary transition-all duration-300 hover:scale-105 active:scale-[0.97] hover:bg-white/[0.08] dark:hover:bg-white/[0.08] hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5"
+                    className="relative h-11 px-6 inline-flex items-center justify-center gap-2 rounded-full border border-secondary/30 text-sm font-semibold text-primary transition-all duration-300 hover:scale-105 active:scale-[0.97] hover:bg-secondary/10 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5"
                   >
                     <svg
                       width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"

@@ -1,27 +1,25 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'motion/react'
 import { ArrowRight, Clock, User, X } from 'lucide-react'
 import type { BlogPost } from '../data'
+import { staggerItem, uiTransition } from '../lib/motion'
 
 interface BlogCardProps {
   post: BlogPost
-  index: number
 }
 
-export default function BlogCard({ post, index }: BlogCardProps) {
+export default function BlogCard({ post }: BlogCardProps) {
   const [open, setOpen] = useState(false)
 
   return (
     <>
       <motion.article
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.4, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-        whileHover={{ y: -10, scale: 1.02 }}
-        className="glass rounded-2xl p-6 md:p-8 border border-white/10 dark:border-white/5 flex flex-col hover:border-accent/30 hover:shadow-2xl hover:shadow-accent/10 transition-[border-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+        variants={staggerItem}
+        transition={uiTransition}
+        whileHover={{ y: -4 }}
+        className="glass rounded-xl p-5 md:p-6 border border-border flex flex-col hover:border-accent/30 hover:shadow-2xl hover:shadow-accent/10 transition-[border-color,box-shadow] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
       >
-        <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-secondary mb-5">
+        <div className="flex items-center gap-3 font-mono text-xs font-bold uppercase tracking-widest text-secondary mb-5">
           <span>{post.date}</span>
           <span className="w-1 h-1 rounded-full bg-accent" />
           <span className="flex items-center gap-1">
@@ -40,7 +38,7 @@ export default function BlogCard({ post, index }: BlogCardProps) {
         <p className="text-sm text-secondary/80 mb-6 line-clamp-3 text-justify">{post.excerpt}</p>
         <button
           onClick={() => setOpen(true)}
-          className="inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-bold text-accent hover:text-accent-hover transition-colors mt-auto group/link cursor-pointer bg-transparent"
+          className="inline-flex min-h-11 items-center gap-1.5 px-4 text-sm font-bold text-accent hover:text-accent-hover transition-colors mt-auto group/link cursor-pointer bg-transparent"
         >
           Read More <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
         </button>
@@ -63,7 +61,7 @@ export default function BlogCard({ post, index }: BlogCardProps) {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-2xl p-8 md:p-10 border border-white/10"
+              className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-xl p-6 md:p-8 border border-border"
               style={{
                 background: 'var(--bg)',
                 backdropFilter: 'blur(20px)',
@@ -72,13 +70,13 @@ export default function BlogCard({ post, index }: BlogCardProps) {
             >
               <button
                 onClick={() => setOpen(false)}
-                className="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-secondary hover:text-primary hover:bg-white/20 transition-[color,background-color] duration-200"
+                className="absolute top-4 right-4 w-11 h-11 rounded-full bg-secondary/10 flex items-center justify-center text-secondary hover:text-primary hover:bg-secondary/20 transition-[color,background-color] duration-200"
                 aria-label="Close"
               >
                 <X size={18} />
               </button>
 
-              <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-secondary mb-5">
+              <div className="flex items-center gap-3 font-mono text-xs font-bold uppercase tracking-widest text-secondary mb-5">
                 <span>{post.date}</span>
                 <span className="w-1 h-1 rounded-full bg-accent" />
                 <span className="flex items-center gap-1">

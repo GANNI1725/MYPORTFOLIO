@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import SEO from '../components/SEO'
 import { personalInfo } from '../data'
 import SocialLinks from '../components/SocialLinks'
@@ -47,7 +47,7 @@ export default function AboutUs() {
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="mb-12"
           >
-            <p className="text-xs font-semibold tracking-[0.2em] uppercase text-accent mb-3">About</p>
+            <p className="font-mono code-label text-2xs font-medium tracking-eyebrow uppercase text-accent mb-3">About</p>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-primary leading-tight">
               About <span className="text-accent">Us</span>
             </h1>
@@ -104,7 +104,7 @@ export default function AboutUs() {
             </div>
             <a
               href="/#contact"
-              className="inline-flex h-11 px-6 items-center justify-center rounded-xl bg-accent text-white text-sm font-semibold shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/40 transition-all"
+              className="inline-flex h-11 px-6 items-center justify-center rounded-xl bg-accent-cta text-white text-sm font-semibold shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/40 transition-all"
             >
               Get in Touch
             </a>

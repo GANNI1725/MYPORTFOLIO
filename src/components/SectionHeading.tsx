@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 
 interface SectionHeadingProps {
   label: string
@@ -14,7 +14,7 @@ export default function SectionHeading({ label, title, subtitle }: SectionHeadin
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className="inline-block text-xs font-semibold tracking-[0.2em] uppercase text-accent mb-4"
+        className="inline-block font-mono code-label text-3xs font-medium tracking-eyebrow uppercase text-accent mb-4"
       >
         {label}
       </motion.span>

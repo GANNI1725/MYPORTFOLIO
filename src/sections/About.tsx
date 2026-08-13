@@ -1,7 +1,8 @@
 import { useState, useRef, useCallback } from 'react'
-import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { motion, useMotionValue, useSpring } from 'motion/react'
 import SectionHeading from '../components/SectionHeading'
 import { aboutContent, personalInfo } from '../data'
+import { revealTransition } from '../lib/motion'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { useTheme } from '../theme/useTheme'
 
@@ -35,7 +36,14 @@ export default function About() {
   }, [mouseX, mouseY])
 
   return (
-    <section id="about" className="py-24 md:py-32 px-6 md:px-10">
+    <motion.section
+      id="about"
+      className="py-20 md:py-28 px-6 md:px-10 bg-dots"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={revealTransition}
+    >
       <div className="max-w-7xl mx-auto">
         <SectionHeading
           label="About"
@@ -64,7 +72,7 @@ export default function About() {
               style={reduced ? undefined : { rotateX: springRotateX, rotateY: springRotateY }}
             >
               {imgError ? (
-                <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-purple-500/20" />
+                <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-accent-hover/20" />
               ) : (
                 <img
                   src={theme === 'red' ? '/Red%20mode%20my%20photo.png' : personalInfo.avatar}
@@ -77,8 +85,8 @@ export default function About() {
               )}
               <div className="absolute inset-0" />
             </motion.div>
-            <div className="absolute -bottom-4 -right-4 w-32 h-32 rounded-2xl bg-accent/5 border border-white/10" />
-            <div className="absolute -top-4 -left-4 w-24 h-24 rounded-full bg-accent/[0.03] blur-2xl" />
+            <div className="absolute -bottom-4 -right-4 w-32 h-32 rounded-2xl bg-accent/5 border border-border" />
+            <div className="absolute -top-4 -left-4 w-24 h-24 rounded-full bg-accent/5 blur-2xl" />
           </motion.div>
 
           <motion.div
@@ -88,7 +96,7 @@ export default function About() {
             transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col gap-5"
           >
-            <p className="text-sm font-semibold text-accent mb-1">
+            <p className="font-mono text-sm font-semibold text-accent mb-1">
               Frontend Intern at Sweven Incorporate Pvt. Ltd.
             </p>
             {aboutContent.paragraphs.map((p, i) => (
@@ -119,6 +127,6 @@ export default function About() {
           </motion.div>
         </div>
       </div>
-    </section>
+    </motion.section>
   )
 }

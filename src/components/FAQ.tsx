@@ -1,7 +1,8 @@
 import { useState, useId, type ReactNode } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'motion/react'
 import { ChevronDown } from 'lucide-react'
 import SectionHeading from './SectionHeading'
+import { revealTransition } from '../lib/motion'
 
 interface FAQItem {
   question: string
@@ -66,15 +67,15 @@ function AccordionItem({ item, isOpen, onToggle }: { item: FAQItem; isOpen: bool
   const buttonId = `faq-button-${id}`
 
   return (
-    <div className="border border-[var(--border)] rounded-xl overflow-hidden transition-colors">
+    <div className="border border-border rounded-xl overflow-hidden transition-colors">
       <button
         id={buttonId}
         onClick={onToggle}
         aria-expanded={isOpen}
         aria-controls={panelId}
-        className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left text-sm font-semibold text-primary hover:bg-white/[0.02] transition-colors cursor-pointer"
+        className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left text-sm font-semibold text-primary hover:bg-secondary/5 transition-colors cursor-pointer"
       >
-        <span>{item.question}</span>
+        <span className="font-mono">{item.question}</span>
         <motion.span
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
@@ -113,7 +114,14 @@ export default function FAQ() {
   }
 
   return (
-    <section id="faq" className="py-24 md:py-32 px-6 md:px-10">
+    <motion.section
+      id="faq"
+      className="py-20 md:py-28 px-6 md:px-10"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={revealTransition}
+    >
       <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
       <div className="max-w-3xl mx-auto">
         <SectionHeading
@@ -137,6 +145,6 @@ export default function FAQ() {
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   )
 }

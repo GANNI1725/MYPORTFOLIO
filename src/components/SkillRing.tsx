@@ -1,13 +1,13 @@
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
+import { staggerItem, uiTransition } from '../lib/motion'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 
 interface SkillRingProps {
   name: string
   percentage: number
-  index: number
 }
 
-export default function SkillRing({ name, percentage, index }: SkillRingProps) {
+export default function SkillRing({ name, percentage }: SkillRingProps) {
   const reduced = useReducedMotion()
   const radius = 36
   const circumference = 2 * Math.PI * radius
@@ -15,10 +15,8 @@ export default function SkillRing({ name, percentage, index }: SkillRingProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
+      variants={staggerItem}
+      transition={uiTransition}
       whileHover={{ scale: 1.08 }}
       className="flex flex-col items-center gap-3 group cursor-pointer"
     >
@@ -31,7 +29,7 @@ export default function SkillRing({ name, percentage, index }: SkillRingProps) {
             fill="none"
             stroke="currentColor"
             strokeWidth="5"
-            className="text-white/10 dark:text-white/5"
+            className="text-secondary/10"
           />
           <motion.circle
             cx="40"
@@ -46,14 +44,14 @@ export default function SkillRing({ name, percentage, index }: SkillRingProps) {
             initial={reduced ? false : { strokeDashoffset: circumference }}
             whileInView={reduced ? undefined : { strokeDashoffset: offset }}
             viewport={{ once: true }}
-            transition={{ duration: 1.2, delay: index * 0.05, ease: [0, 0.65, 0.15, 1] }}
+            transition={{ duration: 1.2, ease: [0, 0.65, 0.15, 1] }}
           />
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-xs font-bold text-primary group-hover:text-accent transition-colors duration-200">{percentage}%</span>
+          <span className="font-mono text-xs font-bold text-primary group-hover:text-accent transition-colors duration-200">{percentage}%</span>
         </div>
       </div>
-      <span className="text-xs font-semibold text-secondary tracking-wide group-hover:text-primary transition-colors duration-200">{name}</span>
+      <span className="font-mono text-2xs text-secondary tracking-wide group-hover:text-primary transition-colors duration-200">{name}</span>
     </motion.div>
   )
 }

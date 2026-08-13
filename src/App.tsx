@@ -1,5 +1,6 @@
 import { Suspense, lazy, useEffect, useLayoutEffect, useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
+import { MotionConfig } from 'motion/react'
 import { ThemeProvider } from './theme/ThemeProvider'
 import Navbar from './components/Navbar'
 import Footer from './sections/Footer'
@@ -77,27 +78,35 @@ export default function App() {
 
   return (
     <ThemeProvider>
-      <ErrorBoundary fallback={<ServerError />}>
-        <ScrollToTop />
-        <ScrollProgress />
-        <Navbar />
-        <Suspense fallback={<div className="min-h-screen" />}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/about-us" element={<AboutUs />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/contact-us" element={<ContactUs />} />
-            <Route path="/500" element={<ServerError />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-        <Suspense fallback={null}>
-          <RedModeLoader />
-        </Suspense>
-        <RedModeMusic />
-        <Footer />
-      </ErrorBoundary>
+      <MotionConfig reducedMotion="user">
+        <ErrorBoundary fallback={<ServerError />}>
+          <ScrollToTop />
+          <ScrollProgress />
+          <Navbar />
+          <Suspense
+            fallback={
+              <div className="min-h-screen grid-bg flex items-center justify-center" aria-hidden="true">
+                <div className="w-8 h-8 rounded-full bg-accent/15 border border-accent/30 animate-pulse-glow" />
+              </div>
+            }
+          >
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/about-us" element={<AboutUs />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/contact-us" element={<ContactUs />} />
+              <Route path="/500" element={<ServerError />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+          <Suspense fallback={null}>
+            <RedModeLoader />
+          </Suspense>
+          <RedModeMusic />
+          <Footer />
+        </ErrorBoundary>
+      </MotionConfig>
     </ThemeProvider>
   )
 }

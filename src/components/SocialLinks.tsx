@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import MagneticWrap from './MagneticWrap'
 
 interface SocialLink {
@@ -31,7 +31,7 @@ export default function SocialLinks({ links, delay = 0 }: SocialLinksProps) {
             href={social.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-11 h-11 rounded-full bg-white/10 dark:bg-white/5 border border-white/10 flex items-center justify-center text-secondary transition-[color,border-color,background-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-110 active:scale-95"
+            className="w-11 h-11 rounded-full bg-secondary/5 border border-border flex items-center justify-center text-secondary transition-[color,border-color,background-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-110 active:scale-95"
             style={{
               '--social-color': social.color,
               '--social-glow': social.glow,
@@ -57,7 +57,7 @@ export default function SocialLinks({ links, delay = 0 }: SocialLinksProps) {
           >
             {social.icon}
           </a>
-          <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-[var(--surface)] px-2.5 py-1 text-[11px] font-medium text-primary opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 border border-[var(--border)] shadow-lg">
+          <span className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-surface px-2.5 py-1 text-2xs font-medium text-primary opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 border border-border shadow-lg">
             {social.label}
           </span>
           </div>

@@ -1,12 +1,12 @@
 import { useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import { Mail, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react'
 import emailjs from '@emailjs/browser'
 import SEO from '../components/SEO'
 import { personalInfo } from '../data'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 
-const inputClass = 'w-full px-4 py-3 rounded-xl bg-white/5 dark:bg-white/5 border border-[var(--border)] text-primary text-sm focus:outline-none focus:border-accent focus:ring-[3px] focus:ring-accent/20 focus:bg-accent/[0.02] focus:shadow-xl focus:shadow-accent/10 transition-[border-color,box-shadow,background-color] duration-200'
+const inputClass = 'w-full px-4 py-3 rounded-xl bg-surface/60 border border-border text-primary text-sm focus:outline-none focus:border-accent focus:ring-[3px] focus:ring-accent/20 focus:bg-accent/5 focus:shadow-xl focus:shadow-accent/10 transition-[border-color,box-shadow,background-color] duration-200'
 
 const staggerItem = {
   hidden: { opacity: 0, y: 20 },
@@ -65,7 +65,7 @@ export default function ContactUs() {
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="mb-12 text-center"
           >
-            <p className="text-xs font-semibold tracking-[0.2em] uppercase text-accent mb-3">Contact</p>
+            <p className="font-mono code-label text-2xs font-medium tracking-eyebrow uppercase text-accent mb-3">Contact</p>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-primary leading-tight">
               Get In <span className="text-accent">Touch</span>
             </h1>
@@ -171,7 +171,7 @@ export default function ContactUs() {
                       ? 'bg-accent/20 text-accent'
                       : status === 'error'
                       ? 'bg-red-900/20 text-red-400'
-                      : 'bg-accent text-white shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/40'
+                      : 'bg-accent-cta text-white shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/40'
                   }`}
                   >
                     {status === 'idle' && (

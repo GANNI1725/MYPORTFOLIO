@@ -1,4 +1,4 @@
-import { useReducedMotion as useFramerReducedMotion } from 'framer-motion'
+import { useReducedMotion as useFramerReducedMotion } from 'motion/react'
 
 export function useReducedMotion() {
   return useFramerReducedMotion()

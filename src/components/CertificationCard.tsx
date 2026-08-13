@@ -1,6 +1,7 @@
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import { Award, ExternalLink } from 'lucide-react'
 import type { Certification } from '../data'
+import { staggerItem, uiTransition } from '../lib/motion'
 
 interface CertificationCardProps {
   cert: Certification
@@ -12,15 +13,13 @@ export default function CertificationCard({ cert, index }: CertificationCardProp
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={{ y: -10, scale: 1.02 }}
-      className="glass rounded-2xl p-6 md:p-8 text-center border border-white/10 dark:border-white/5 hover:border-accent/30 hover:shadow-2xl hover:shadow-accent/10 transition-[border-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] relative overflow-hidden"
+      variants={staggerItem}
+      transition={uiTransition}
+      whileHover={{ y: -4 }}
+      className="glass rounded-xl p-5 md:p-6 text-center border border-border hover:border-accent/30 hover:shadow-2xl hover:shadow-accent/10 transition-[border-color,box-shadow] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] relative overflow-hidden"
     >
       {isRecent && (
-        <span className="absolute top-3 right-3 text-[10px] font-bold uppercase tracking-widest text-accent bg-accent/10 px-2 py-1 rounded-full">
+        <span className="code-tag absolute top-3 right-3 bg-accent/10 px-2 py-1 rounded-md">
           Latest
         </span>
       )}
@@ -28,12 +27,12 @@ export default function CertificationCard({ cert, index }: CertificationCardProp
         <Award size={22} />
       </div>
       <h3 className="text-base font-bold text-primary mb-2">{cert.title}</h3>
-      <p className="text-sm text-secondary mb-5">
+      <p className="font-mono text-xs text-secondary mb-5">
         {cert.issuer} &bull; {cert.date}
       </p>
       <button
         onClick={(e) => e.preventDefault()}
-        className="inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-bold text-accent hover:text-accent-hover transition-colors group/link cursor-pointer bg-transparent"
+        className="inline-flex min-h-11 items-center gap-1.5 px-4 text-sm font-bold text-accent hover:text-accent-hover transition-colors group/link cursor-pointer bg-transparent"
       >
         View Certificate <ExternalLink size={14} className="group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform duration-200" />
       </button>

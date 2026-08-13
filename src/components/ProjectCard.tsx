@@ -1,15 +1,15 @@
 import { useRef, useCallback } from 'react'
-import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { motion, useMotionValue, useSpring } from 'motion/react'
 import { ExternalLink } from 'lucide-react'
 import type { Project } from '../data'
+import { staggerItem, uiTransition } from '../lib/motion'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 
 interface ProjectCardProps {
   project: Project
-  index: number
 }
 
-export default function ProjectCard({ project, index }: ProjectCardProps) {
+export default function ProjectCard({ project }: ProjectCardProps) {
   const reduced = useReducedMotion()
   const imgRef = useRef<HTMLDivElement>(null)
   const mouseX = useMotionValue(0)
@@ -33,18 +33,16 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={{ y: -10, scale: 1.02 }}
-      className="group glass rounded-2xl overflow-hidden border border-white/10 dark:border-white/5 hover:border-accent/30 hover:shadow-2xl hover:shadow-accent/10 transition-[border-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+      variants={staggerItem}
+      transition={uiTransition}
+      whileHover={{ y: -4 }}
+      className="group glass rounded-xl overflow-hidden border border-border hover:border-accent/30 hover:shadow-2xl hover:shadow-accent/10 transition-[border-color,box-shadow] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
     >
       <div
         ref={imgRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="relative aspect-video bg-gradient-to-br from-accent/5 to-purple-500/5 flex items-center justify-center overflow-hidden"
+        className="relative aspect-video bg-gradient-to-br from-accent/5 to-accent-hover/10 flex items-center justify-center overflow-hidden"
         style={{ perspective: 500 }}
       >
         <motion.div
@@ -65,7 +63,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
             }}
           />
         </motion.div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg)]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-canvas/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" />
         <div className="hidden w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center text-accent group-hover:scale-110 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
@@ -74,8 +72,8 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
           </svg>
         </div>
       </div>
-      <div className="p-5 md:p-6">
-        <p className="text-xs font-bold uppercase tracking-widest text-accent mb-2">{project.category}</p>
+      <div className="p-4 md:p-5">
+        <p className="font-mono code-label text-xs font-bold uppercase tracking-widest text-accent mb-2">{project.category}</p>
         <h3 className="text-lg font-bold text-primary mb-1">{project.title}</h3>
         <p className="text-sm text-secondary mb-1">{project.subtitle}</p>
         <p className="text-sm text-secondary/80 leading-relaxed mb-4 line-clamp-2">
@@ -86,7 +84,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
             {project.techStack.map((tech) => (
               <span
                 key={tech}
-                className="px-2 py-0.5 rounded-full bg-accent/10 text-accent text-[10px] font-semibold tracking-wide"
+                className="code-tag"
               >
                 {tech}
               </span>
@@ -98,7 +96,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
             href={project.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-accent hover:text-accent-hover transition-colors group/link"
+            className="inline-flex min-h-11 items-center gap-1.5 text-xs font-bold text-accent hover:text-accent-hover transition-colors group/link"
           >
             Live Demo <ExternalLink size={12} className="group-hover/link:translate-x-1 transition-transform duration-200 ease-[cubic-bezier(0.16,1,0.3,1)]" />
           </a>

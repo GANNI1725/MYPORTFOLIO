@@ -1,4 +1,4 @@
-import { motion, animate } from 'framer-motion'
+import { motion, animate } from 'motion/react'
 import { useEffect, useState } from 'react'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 
@@ -42,14 +42,14 @@ export default function StatsCard({ stats, delay = 0.8 }: StatsCardProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay, ease: [0.16, 1, 0.3, 1] }}
-      className="glass rounded-2xl p-5 flex"
+      className="glass rounded-xl p-4 flex"
     >
       {stats.map((stat, i) => (
         <div
           key={stat.label}
-          className={`flex-1 text-center py-2 ${i < stats.length - 1 ? 'border-r border-[var(--border)]' : ''}`}
+          className={`flex-1 text-center py-2 ${i < stats.length - 1 ? 'border-r border-border' : ''}`}
         >
-          <p className="text-2xl font-bold text-accent">
+          <p className="font-mono text-2xl font-bold text-accent">
             {reduced ? stat.value : <AnimatedNumber value={stat.value} delay={delay + 0.3 + i * 0.3} />}
           </p>
           <p className="text-xs font-semibold uppercase tracking-wider text-secondary mt-1">
