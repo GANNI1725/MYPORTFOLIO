@@ -1,4 +1,4 @@
-import { useRef, useCallback, useState, useMemo, useEffect } from 'react'
+import { useRef, useCallback, useState, useEffect } from 'react'
 import { motion, useMotionValue, useSpring } from 'motion/react'
 import { ArrowDown } from 'lucide-react'
 import { personalInfo, stats } from '../data'
@@ -170,15 +170,6 @@ export default function Hero() {
     }
   }, [theme, reduced])
 
-  const shuffleOrder = useMemo(() => {
-    const order = Array.from({ length: nameChars.length }, (_, i) => i)
-    for (let j = order.length - 1; j > 0; j--) {
-      const k = Math.floor(Math.random() * (j + 1));
-      [order[j], order[k]] = [order[k], order[j]]
-    }
-    return order
-  }, [])
-
   return (
     <section
       id="home"
@@ -199,13 +190,8 @@ export default function Hero() {
             </motion.p>
 
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ ...revealTransition, delay: 0.05 }}
-              className={`name-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight text-left text-balance text-primary${glitching ? ' red-glitch-active' : ''}`}
-              style={{
-                animation: reduced ? 'none' : 'name-glow 3.5s cubic-bezier(0.4,0,0.2,1) 0.8s infinite',
-              }}
+              aria-label="Ganesh Prasad Bhandari"
+              className={`name-title${reduced ? '' : ' name-flash'} text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight text-left text-balance text-white${glitching ? ' red-glitch-active' : ''}`}
             >
               {reduced
                 ? "Ganesh Prasad \n Bhandari"
@@ -215,21 +201,20 @@ export default function Hero() {
                     ) : char === "\n" ? (
                       <div key={i} className="w-full" />
                     ) : (
-                      <motion.span
-                        key={i}
-                        className="inline-block"
-                        initial={{ opacity: 0, y: 80, scale: 0.2, rotate: -20, color: 'var(--color-accent)', filter: 'blur(8px)' }}
-                        animate={{ opacity: 1, y: 0, scale: 1, rotate: 0, color: 'var(--primary)', filter: 'blur(0px)' }}
-                        transition={{
-                          type: 'spring',
-                          stiffness: 220,
-                          damping: 11,
-                          mass: 0.4,
-                          delay: shuffleOrder.indexOf(i) * 0.02,
-                        }}
-                      >
-                        {char}
-                      </motion.span>
+                      <span key={i} className="char-mask" aria-hidden="true">
+                        <motion.span
+                          className="inline-block"
+                          initial={{ y: '115%', rotate: 5, opacity: 0 }}
+                          animate={{ y: '0%', rotate: 0, opacity: 1 }}
+                          transition={{
+                            delay: i * 0.02,
+                            duration: 0.8,
+                            ease: [0.22, 1, 0.36, 1],
+                          }}
+                        >
+                          {char}
+                        </motion.span>
+                      </span>
                     )
                   )}
             </motion.h1>
@@ -241,29 +226,56 @@ export default function Hero() {
             </div>
 
             <motion.h2
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              initial={{ opacity: 0, y: 40, scale: 0.92 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ ...revealTransition, delay: 0.8 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-accent leading-tight"
             >
               Frontend Developer
+              <motion.span
+                className="block mt-2 h-1 w-24 rounded-full bg-gradient-to-r from-accent to-accent-hover"
+                initial={{ scaleX: 0, opacity: 0 }}
+                animate={{ scaleX: 1, opacity: 1 }}
+                transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                style={{ originX: 0 }}
+              />
             </motion.h2>
 
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ ...revealTransition, delay: 1.0 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
               className="text-base md:text-lg text-secondary max-w-lg leading-relaxed"
+              aria-label={personalInfo.tagline}
             >
-              {personalInfo.tagline}
+              {reduced
+                ? personalInfo.tagline
+                : (() => {
+                    const words = personalInfo.tagline.split(' ')
+                    return words.map((word, i) => (
+                      <span key={i}>
+                        <span className="char-mask" aria-hidden="true">
+                          <motion.span
+                            className="inline-block"
+                            initial={{ y: '115%' }}
+                            animate={{ y: '0%' }}
+                            transition={{ delay: 0.05 + i * 0.035, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                          >
+                            {word}
+                          </motion.span>
+                        </span>
+                        {i < words.length - 1 ? ' ' : null}
+                      </span>
+                    ))
+                  })()}
             </motion.p>
 
-            <SocialLinks links={socialLinks} delay={1.8} />
+            <SocialLinks links={socialLinks} delay={0} />
 
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ ...revealTransition, delay: 2.0 }}
+              initial={{ opacity: 0, y: 24, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.7, ease: [0.34, 1.56, 0.64, 1] }}
               className="flex flex-wrap gap-3"
             >
               <MagneticWrap>
@@ -298,7 +310,7 @@ export default function Hero() {
               </MagneticWrap>
             </motion.div>
 
-            <StatsCard stats={stats} delay={2.2} />
+            <StatsCard stats={stats} delay={0} />
           </div>
 
           <div className="hidden lg:flex items-center justify-center h-full">
@@ -315,14 +327,13 @@ export default function Hero() {
           aria-label="Scroll to next section"
           className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[#FF2B2B]"
           initial={{ opacity: 0 }}
-          animate={reduced ? { opacity: 1 } : { opacity: 1, y: [0, -5, 0], filter: ['drop-shadow(0 0 3px rgba(255,43,43,0.35))', 'drop-shadow(0 0 12px rgba(255,43,43,0.6))', 'drop-shadow(0 0 3px rgba(255,43,43,0.35))'] }}
+          animate={reduced ? { opacity: 1 } : { opacity: 1, y: [0, -5, 0] }}
           transition={
             reduced
-              ? { duration: 0.6, delay: 0.6, ease: [0.16, 1, 0.3, 1] }
+              ? { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
               : {
-                  opacity: { duration: 0.6, delay: 0.6, ease: [0.16, 1, 0.3, 1] },
+                  opacity: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
                   y: { duration: 2.5, ease: 'easeInOut', repeat: Infinity },
-                  filter: { duration: 2.5, ease: 'easeInOut', repeat: Infinity },
                 }
           }
         >
@@ -348,7 +359,7 @@ export default function Hero() {
           className="absolute bottom-6 left-1/2 -translate-x-1/2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, y: [0, 8, 0] }}
-          transition={{ opacity: { delay: 0.6, ease: [0.16, 1, 0.3, 1] }, y: { duration: 2, repeat: Infinity, ease: [0.4, 0, 0.2, 1] } }}
+          transition={{ opacity: { ease: [0.16, 1, 0.3, 1] }, y: { duration: 2, repeat: Infinity, ease: [0.4, 0, 0.2, 1] } }}
         >
           <div className="w-6 h-10 rounded-full border border-white/10 flex items-start justify-center p-1.5">
             <div className="w-1 h-2 rounded-full bg-accent/60" />

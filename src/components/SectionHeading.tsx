@@ -19,8 +19,8 @@ export default function SectionHeading({ label, title, subtitle }: SectionHeadin
         {label}
       </motion.span>
       <motion.h2
-        initial={{ opacity: 0, y: 40, scale: 0.9, filter: 'blur(10px)' }}
-        whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+        initial={{ opacity: 0, y: 40, scale: 0.9 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
         className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-primary leading-tight"

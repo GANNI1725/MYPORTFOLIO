@@ -210,6 +210,27 @@ textarea:focus::placeholder {
 .name-title {
   font-family: var(--font-display);
   font-weight: 700;
+  text-shadow: 0 0 24px color-mix(in srgb, var(--color-accent) 22%, transparent);
+}
+
+@keyframes name-flash {
+  0%, 78% { opacity: 1; }
+  81% { opacity: 0.45; }
+  84% { opacity: 1; }
+  87% { opacity: 0.6; }
+  91% { opacity: 1; }
+  95% { opacity: 0.75; }
+  100% { opacity: 1; }
+}
+
+.name-flash {
+  animation: name-flash 4.8s ease-in-out infinite;
+}
+
+.char-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: baseline;
 }
 
 /* IT/developer aesthetic — code-flavored micro-details (token-only) */

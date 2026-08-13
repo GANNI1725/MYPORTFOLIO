@@ -24,8 +24,8 @@ function AnimatedNumber({ value, delay }: { value: string; delay: number }) {
 
   return (
     <motion.span
-      initial={{ opacity: 0, scale: 0.3, filter: 'blur(4px)' }}
-      animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+      initial={{ opacity: 0, scale: 0.3 }}
+      animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.4, delay, ease: [0.16, 1, 0.3, 1] }}
       className="inline-block tabular-nums"
     >
@@ -50,7 +50,7 @@ export default function StatsCard({ stats, delay = 0.8 }: StatsCardProps) {
           className={`flex-1 text-center py-2 ${i < stats.length - 1 ? 'border-r border-border' : ''}`}
         >
           <p className="font-mono text-2xl font-bold text-accent">
-            {reduced ? stat.value : <AnimatedNumber value={stat.value} delay={delay + 0.3 + i * 0.3} />}
+            {reduced ? stat.value : <AnimatedNumber value={stat.value} delay={delay} />}
           </p>
           <p className="text-xs font-semibold uppercase tracking-wider text-secondary mt-1">
             {stat.label}

@@ -12,6 +12,8 @@ export default function SkillRing({ name, percentage }: SkillRingProps) {
   const radius = 36
   const circumference = 2 * Math.PI * radius
   const offset = circumference - (percentage / 100) * circumference
+  const breatheLo = offset + circumference * 0.05
+  const breatheHi = Math.max(offset - circumference * 0.05, 0)
 
   return (
     <motion.div
@@ -31,21 +33,33 @@ export default function SkillRing({ name, percentage }: SkillRingProps) {
             strokeWidth="5"
             className="text-secondary/10"
           />
-          <motion.circle
-            cx="40"
-            cy="40"
-            r={radius}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="5"
-            strokeLinecap="round"
-            className="text-accent group-hover:brightness-125 transition-all duration-200"
-            strokeDasharray={circumference}
-            initial={reduced ? false : { strokeDashoffset: circumference }}
-            whileInView={reduced ? undefined : { strokeDashoffset: offset }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.2, ease: [0, 0.65, 0.15, 1] }}
-          />
+          <motion.g
+            animate={reduced ? undefined : { rotate: 360 }}
+            transition={reduced ? undefined : { duration: 10, ease: 'linear', repeat: Infinity }}
+            style={{ transformOrigin: '40px 40px' }}
+          >
+            <motion.circle
+              cx="40"
+              cy="40"
+              r={radius}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="5"
+              strokeLinecap="round"
+              className="text-accent group-hover:brightness-125 transition-[filter] duration-200"
+              strokeDasharray={circumference}
+              animate={
+                reduced
+                  ? { strokeDashoffset: offset }
+                  : { strokeDashoffset: [breatheLo, breatheHi, breatheLo] }
+              }
+              transition={
+                reduced
+                  ? undefined
+                  : { duration: 3.8, ease: 'easeInOut', repeat: Infinity, repeatType: 'mirror' }
+              }
+            />
+          </motion.g>
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="font-mono text-xs font-bold text-primary group-hover:text-accent transition-colors duration-200">{percentage}%</span>
