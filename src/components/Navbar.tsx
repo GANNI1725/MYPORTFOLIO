@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -25,22 +25,35 @@ export default function Navbar() {
   const [isPastHero, setIsPastHero] = useState(false)
   const [isMobileOpen, setIsMobileOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
+  const sectionTimer = useRef<number | null>(null)
+
+  const handleNavClick = (href: string) => {
+    setIsMobileOpen(false)
+    const sectionId = href.split('#')[1]
+    if (sectionId) setActiveSection(sectionId)
+  }
 
   useEffect(() => {
     if (!isHome) return
     const onScroll = () => {
       setIsPastHero(window.scrollY > 80)
-      for (const id of sectionIds.toReversed()) {
-        const el = document.getElementById(id)
-        if (el && el.getBoundingClientRect().top <= 200) {
-          setActiveSection(id)
-          break
+      if (sectionTimer.current) window.clearTimeout(sectionTimer.current)
+      sectionTimer.current = window.setTimeout(() => {
+        for (const id of sectionIds.toReversed()) {
+          const el = document.getElementById(id)
+          if (el && el.getBoundingClientRect().top <= 200) {
+            setActiveSection(id)
+            break
+          }
         }
-      }
+      }, 100)
     }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (sectionTimer.current) window.clearTimeout(sectionTimer.current)
+    }
   }, [isHome])
 
   const pillPad = isPastHero ? 'px-3 py-1.5' : 'px-4 py-2'
@@ -71,6 +84,7 @@ export default function Navbar() {
               <a
                 key={item.name}
                 href={item.href}
+                onClick={() => handleNavClick(item.href)}
                 className={`relative px-3 py-1.5 text-sm font-medium transition-colors duration-200 rounded-full whitespace-nowrap ${
                   isActive
                     ? 'text-accent'
@@ -128,7 +142,7 @@ export default function Navbar() {
               <motion.a
                 key={item.name}
                 href={item.href}
-                onClick={() => setIsMobileOpen(false)}
+                onClick={() => handleNavClick(item.href)}
                 initial={{ opacity: 0, y: 30, scale: 0.9 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ delay: i * 0.06, type: 'spring', stiffness: 200, damping: 20 }}
@@ -139,7 +153,7 @@ export default function Navbar() {
             ))}
             <motion.a
               href="/#contact"
-              onClick={() => setIsMobileOpen(false)}
+              onClick={() => handleNavClick('/#contact')}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: navItems.length * 0.06 + 0.1 }}

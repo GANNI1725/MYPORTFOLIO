@@ -3,7 +3,6 @@ export const personalInfo = {
   title: 'Frontend Developer',
   tagline: 'Building modern, scalable and accessible web experiences using React, Next.js, Tailwind CSS and TypeScript.',
   email: 'bhandariganesh1725@gmail.com',
-  phone: '+977 9848958471',
   location: 'Tilottama-6, Manigram, Rupandehi, Nepal',
   resumeUrl: '/Ganesh_Prasad_Bhandari_CV.pdf',
   avatar: '/hero.png',

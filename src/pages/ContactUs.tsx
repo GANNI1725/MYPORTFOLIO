@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react'
+import { Mail, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react'
 import emailjs from '@emailjs/browser'
 import SEO from '../components/SEO'
 import { personalInfo } from '../data'
@@ -54,7 +54,7 @@ export default function ContactUs() {
     <>
       <SEO
         title="Contact Us"
-        description="Get in touch with Ganesh Prasad Bhandari. Use the contact form or reach out via email or phone for project inquiries and collaborations."
+        description="Get in touch with Ganesh Prasad Bhandari. Use the contact form or reach out via email for project inquiries and collaborations."
         path="/contact-us"
       />
       <div className="min-h-screen pt-28 pb-20 px-6 md:px-10">
@@ -91,18 +91,6 @@ export default function ContactUs() {
                 <div>
                   <p className="text-xs font-bold uppercase tracking-widest text-secondary">Email</p>
                   <p className="text-sm font-semibold text-primary">{personalInfo.email}</p>
-                </div>
-              </a>
-              <a
-                href={`tel:${personalInfo.phone}`}
-                className="flex items-center gap-4 p-4 glass rounded-xl hover:border-accent/30 transition-all duration-300 group"
-              >
-                <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent shrink-0 group-hover:scale-110 transition-transform">
-                  <Phone size={18} />
-                </div>
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-widest text-secondary">Phone</p>
-                  <p className="text-sm font-semibold text-primary">{personalInfo.phone}</p>
                 </div>
               </a>
               <a
