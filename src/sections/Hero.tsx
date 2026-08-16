@@ -191,7 +191,7 @@ export default function Hero() {
 
             <motion.h1
               aria-label="Ganesh Prasad Bhandari"
-              className={`name-title${reduced ? '' : ' name-flash'} text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight text-left text-balance text-white${glitching ? ' red-glitch-active' : ''}`}
+              className={`name-title${reduced ? '' : ' name-flash'} text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight text-left text-balance text-primary${glitching ? ' red-glitch-active' : ''}`}
             >
               {reduced
                 ? "Ganesh Prasad \n Bhandari"
