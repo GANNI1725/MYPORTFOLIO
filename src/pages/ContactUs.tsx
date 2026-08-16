@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import { Mail, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react'
-import emailjs from '@emailjs/browser'
 import SEO from '../components/SEO'
 import { personalInfo } from '../data'
 import { useReducedMotion } from '../hooks/useReducedMotion'
@@ -34,6 +33,7 @@ export default function ContactUs() {
     }
 
     try {
+      const emailjs = (await import('@emailjs/browser')).default
       await emailjs.send(
         import.meta.env.VITE_EMAILJS_SERVICE_ID,
         import.meta.env.VITE_EMAILJS_TEMPLATE_ID,

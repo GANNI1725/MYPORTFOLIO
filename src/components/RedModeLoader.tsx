@@ -20,9 +20,8 @@ export default function RedModeLoader() {
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
-    audio.preload = 'auto'
+    audio.preload = 'none'
     audio.volume = IMPACT_VOLUME
-    audio.load()
   }, [])
 
   useEffect(() => {
@@ -49,7 +48,7 @@ export default function RedModeLoader() {
 
   return (
     <>
-      <audio ref={audioRef} preload="auto">
+      <audio ref={audioRef} preload="none">
         <source src={IMPACT_TRACK_SRC} type="audio/mpeg" />
       </audio>
       <AnimatePresence onExitComplete={() => window.dispatchEvent(new CustomEvent(OVERLAY_CLOSED_EVENT))}>

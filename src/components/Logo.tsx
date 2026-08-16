@@ -1,8 +1,11 @@
+import OptimizedImage from './OptimizedImage'
+
 export default function Logo() {
   return (
     <span className="inline-flex items-center">
-      <img
+      <OptimizedImage
         src="/logo.png"
+        webp="/logo.webp"
         alt="GPB"
         width="72"
         height="32"

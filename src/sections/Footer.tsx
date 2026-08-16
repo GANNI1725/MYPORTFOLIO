@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import { ArrowUp, Mail } from 'lucide-react'
+import OptimizedImage from '../components/OptimizedImage'
 import { personalInfo } from '../data'
 
 const socialLinks = [
@@ -81,7 +82,15 @@ export default function Footer() {
             {/* Column 1 — Logo + Tagline + Social */}
             <motion.div variants={fadeUp} className="md:col-span-5 flex flex-col items-center md:items-start gap-5">
               <div className="flex items-center gap-3">
-                <img src="/logo.png" alt="GPB" width="63" height="28" className="footer-logo h-7 w-auto opacity-80" />
+                <OptimizedImage
+                  src="/logo.png"
+                  webp="/logo.webp"
+                  alt="GPB"
+                  width="63"
+                  height="28"
+                  loading="lazy"
+                  className="footer-logo h-7 w-auto opacity-80"
+                />
                 <span className="text-sm font-semibold text-primary">Ganesh Prasad Bhandari</span>
               </div>
               <p className="text-xs text-secondary/70 leading-relaxed max-w-xs text-center md:text-left">

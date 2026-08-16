@@ -6,6 +6,7 @@ import { revealTransition } from '../lib/motion'
 import StatsCard from '../components/StatsCard'
 import SocialLinks from '../components/SocialLinks'
 import MagneticWrap from '../components/MagneticWrap'
+import OptimizedImage from '../components/OptimizedImage'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { useTheme } from '../theme/useTheme'
 
@@ -127,11 +128,15 @@ function PortraitSection() {
                   </div>
                 </div>
               ) : (
-                <img
+                <OptimizedImage
                   src={theme === 'red' ? '/Red%20mode%20my%20photo.png' : personalInfo.avatar}
+                  webp={theme === 'red' ? '/Red%20mode%20my%20photo.webp' : '/hero.webp'}
+                  avif={theme === 'red' ? undefined : '/hero.avif'}
                   alt={personalInfo.name}
                   width={theme === 'red' ? 388 : 545}
                   height={theme === 'red' ? 886 : 1600}
+                  fetchPriority="high"
+                  decoding="sync"
                   className="w-full aspect-[3/4] object-contain"
                   onError={() => setImgError(true)}
                 />

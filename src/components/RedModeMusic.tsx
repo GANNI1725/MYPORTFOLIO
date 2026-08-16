@@ -15,10 +15,9 @@ export default function RedModeMusic() {
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
-    audio.preload = 'auto'
+    audio.preload = 'none'
     audio.loop = true
     audio.volume = RED_MODE_VOLUME
-    audio.load()
   }, [])
 
   useEffect(() => {
@@ -57,7 +56,7 @@ export default function RedModeMusic() {
   }, [])
 
   return (
-    <audio ref={audioRef} preload="auto" loop>
+    <audio ref={audioRef} preload="none" loop>
       <source src={RED_MODE_TRACK_SRC} type="audio/mpeg" />
     </audio>
   )

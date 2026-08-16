@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback } from 'react'
 import { motion, useMotionValue, useSpring } from 'motion/react'
 import SectionHeading from '../components/SectionHeading'
+import OptimizedImage from '../components/OptimizedImage'
 import { aboutContent, personalInfo } from '../data'
 import { revealTransition } from '../lib/motion'
 import { useReducedMotion } from '../hooks/useReducedMotion'
@@ -74,11 +75,14 @@ export default function About() {
               {imgError ? (
                 <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-accent-hover/20" />
               ) : (
-                <img
+                <OptimizedImage
                   src={theme === 'red' ? '/Red%20mode%20my%20photo.png' : personalInfo.avatar}
+                  webp={theme === 'red' ? '/Red%20mode%20my%20photo.webp' : '/hero.webp'}
+                  avif={theme === 'red' ? undefined : '/hero.avif'}
                   alt={personalInfo.name}
                   width={theme === 'red' ? 388 : 545}
                   height={theme === 'red' ? 886 : 1600}
+                  loading="lazy"
                   className="w-full h-full object-contain"
                   onError={() => setImgError(true)}
                 />

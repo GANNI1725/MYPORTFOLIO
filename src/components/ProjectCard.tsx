@@ -3,6 +3,7 @@ import { motion, useMotionValue, useSpring } from 'motion/react'
 import { ExternalLink } from 'lucide-react'
 import type { Project } from '../data'
 import { staggerItem, uiTransition } from '../lib/motion'
+import OptimizedImage from './OptimizedImage'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 
 interface ProjectCardProps {
@@ -49,8 +50,10 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           className="absolute inset-0"
           style={reduced ? undefined : { rotateX: springRotateX, rotateY: springRotateY }}
         >
-          <img
+          <OptimizedImage
             src={project.image}
+            webp={project.image.replace(/\.(png|jpe?g)$/i, '.webp')}
+            avif={project.image.replace(/\.(png|jpe?g)$/i, '.avif')}
             alt={project.title}
             width={project.imageWidth}
             height={project.imageHeight}
